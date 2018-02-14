@@ -50,7 +50,7 @@
         return doValidate($request['sessionid']);
     }
 
-    if ($sessionid)
+    if (isset($sessionid))
       return array("returnCode" => '0', 'sessionid' => ''.$sessionid.'');
     else
       return array("returnCode" => '1', 'sessionid' => '0');
