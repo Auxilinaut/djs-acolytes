@@ -4,6 +4,8 @@
   require_once('get_host_info.inc');
   require_once('rabbitMQLib.inc');
 
+  $sessionid = NULL;
+
   function doLogin($username, $password)
   {
     echo "trying to connect to mysql server" . PHP_EOL;
@@ -44,20 +46,29 @@
     var_dump($request);
     if(!isset($request['type']))
     {
-      return "ERROR: unsupported message type";
+      return "ERROR: request type not set";
     }
     switch ($request['type'])
     {
       case "login":
-        return doLogin($request['username'], $request['password']);
+        doLogin($request['username'], $request['password']);
+        break;
       case "validate_session":
-        return doValidate($request['sessionid']);
+        doValidate($request['sessionid']);
+        break;
+      default:
+        echo "ERROR: request type unhandled";
+        break;
     }
 
     if (isset($sessionid))
+    {
       return array("returnCode" => '0', 'sessionid' => ''.$sessionid.'');
+    }
     else
+    {
       return array("returnCode" => '1', 'sessionid' => '0');
+    }
   }
 
   $server = new rabbitMQServer("testRabbitMQ.ini", "testServer");

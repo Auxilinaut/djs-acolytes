@@ -15,7 +15,7 @@ else
 }
 
 $request = array();
-$request['type'] = "Login";
+$request['type'] = "login";
 //$request['username'] = $_POST["uname"];
 //$request['password'] = $_POST["pword"];
 $request['username'] = "Beni";
