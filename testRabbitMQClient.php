@@ -3,9 +3,12 @@ require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
 
-echo "we are about to connect";
+echo "we are about to connect" . PHP_EOL;
 
 $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
+
+echo "we made client" . PHP_EOL;
+
 if (isset($argv[1]))
 {
   $msg = $argv[1];
