@@ -6,6 +6,7 @@
 
   //$sessionid = NULL;
   echo "running server";
+  $sessionid = NULL;
 
   function doLogin($username, $password)
   {
