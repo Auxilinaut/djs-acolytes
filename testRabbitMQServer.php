@@ -31,7 +31,7 @@
     {
       //session_start();
       $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-      $sessionid = $row["id"];  // Initializing Session with value of PHP Variable
+      global $sessionid = $row["id"];  // Initializing Session with value of PHP Variable
       echo "sessionid: " . $sessionid . PHP_EOL;
       return true;
     }
