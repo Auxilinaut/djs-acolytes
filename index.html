@@ -56,6 +56,11 @@
                 var testresponse = document.getElementById("testresponse");
                 testresponse.innerHTML = res;
             }
+            else
+            {
+                var testresponse = document.getElementById("testresponse");
+                testresponse.innerHTML = "readystate not 4: " + http.readyState;
+            }
         }
 
     </script>
