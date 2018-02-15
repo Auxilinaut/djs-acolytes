@@ -22,6 +22,10 @@ $request = array();
 $request['type'] = "login";
 $request['username'] = $_POST["uname"];
 $request['password'] = $_POST["pword"];
+
+echo "              request uname " . $request['username'] . PHP_EOL;
+echo "              request pword " . $request['password'] . PHP_EOL;
+
 //$request['username'] = "Howard";
 //$request['password'] = "sing";
 $request['message'] = $msg;
