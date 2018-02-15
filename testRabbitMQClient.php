@@ -16,10 +16,10 @@ else
 
 $request = array();
 $request['type'] = "login";
-//$request['username'] = $_POST["uname"];
-//$request['password'] = $_POST["pword"];
-$request['username'] = "Beni";
-$request['password'] = "newbie";
+$request['username'] = $_POST["uname"];
+$request['password'] = $_POST["pword"];
+//$request['username'] = "Howard";
+//$request['password'] = "sing";
 $request['message'] = $msg;
 $response = $client->send_request($request);
 //$response = $client->publish($request);

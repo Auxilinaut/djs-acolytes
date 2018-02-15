@@ -10,7 +10,7 @@
     <div class="vidup">
         <h1>Login</h1>
         <div class="wrapper d-flex p-y-3">
-            <form method="post" action="login.php" name="patient">
+            <form name="bepatient">
                 <div class="d-flex p-y-1">
                     <div>Username:</div>
                     <div class="p-x-1">
@@ -26,8 +26,8 @@
                     <div><span class="req">REQUIRED</span></div>
                 </div>
                 <div class="d-flex p-y-1">
-                    <div><input type="submit" name="submit" class="button" value="Login"></div>
-                    <div id="errmsg"></div>
+                    <div><input name="submit" class="button" onclick="submitRequest()" value="Login"></div>
+                    <div id="testresponse"></div>
                 </div>
             </form>
         </div>
@@ -37,41 +37,23 @@
     <script>
         var http = new XMLHttpRequest();
 
-        function updateReq()
+        function submitRequest()
         {
             var uname = document.getElementById("uname").value;
             var pwd = document.getElementById("pwd").value;
 
-            http.open('POST', 'testRabbitMQServer.php', true);
-            http.onreadystatechange = updateRes;
+            http.open('POST', 'testRabbitMQClient.php', true);
+            http.onreadystatechange = receiveResponse;
             http.send("uname=" + uname + "&pword=" + pwd);
         }
 
-        function updateRes()
+        function receiveResponse()
         {
             if (http.readyState == 4)
             {
                 var res = http.responseText;
-                var chatters = document.getElementById("errmsg");
-                chatters.innerHTML = res;
-            }
-        }
-
-        /*function receiveReq()
-        {
-            var other = document.getElementById("otheruname").value;
-            http.open('get', 'receive.php?u=' + other);
-            http.onreadystatechange = receiveRes;
-            http.send(null);
-        }*/
-
-        function receiveRes()
-        {
-            if (http.readyState == 4)
-            {
-                var res = http.responseText;
-
-                document.getElementById("otherchat").innerHTML = res;
+                var testresponse = document.getElementById("testresponse");
+                testresponse.innerHTML = res;
             }
         }
 
