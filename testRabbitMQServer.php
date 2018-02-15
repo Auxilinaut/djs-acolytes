@@ -5,7 +5,7 @@
   require_once('rabbitMQLib.inc');
 
   //$sessionid = NULL;
-  echo "running server";
+  echo "running server" . PHP_EOL;
   $sessionid = NULL;
 
   function doLogin($username, $password)
@@ -24,7 +24,7 @@
     // lookup username in databas
     // check password
     
-    echo "query consists of username " . $username . " and password " . $password;
+    echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
     $query = "SELECT * FROM logininfo WHERE username = '$username' and pword = '$password'";
     
     if ($result = mysqli_query($con, $query))
@@ -63,9 +63,9 @@
         break;
     }
 
-    if (isset($sessionid))
+    if (isset($GLOBALS['sessionid']))
     {
-      return array("returnCode" => '0', 'sessionid' => ''.$sessionid.'');
+      return array("returnCode" => '0', 'sessionid' => ''. $GLOBALS['sessionid'] .'');
     }
     else
     {
