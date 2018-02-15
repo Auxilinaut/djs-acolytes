@@ -4,12 +4,13 @@
   require_once('get_host_info.inc');
   require_once('rabbitMQLib.inc');
 
-  $sessionid = NULL;
+  //$sessionid = NULL;
+  echo "running server";
 
   function doLogin($username, $password)
   {
     echo "trying to connect to mysql server" . PHP_EOL;
-    $con = mysqli_connect ("localhost", "root", "", "userdata");// or die("Could not connect: " . mysql_error());
+    $con = mysqli_connect ("localhost", "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
     
     // Check connection
     if (mysqli_connect_errno())
@@ -29,7 +30,7 @@
     {
       //session_start();
       $row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-      $sessionid = $row[id];  // Initializing Session with value of PHP Variable
+      $sessionid = $row["id"];  // Initializing Session with value of PHP Variable
       echo "sessionid: " . $sessionid . PHP_EOL;
       return true;
     }
