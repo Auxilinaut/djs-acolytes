@@ -1,5 +1,6 @@
 #!/usr/bin/php
 <?php
+  include("connection.php"); 
   require_once('path.inc');
   require_once('get_host_info.inc');
   require_once('rabbitMQLib.inc');
@@ -11,13 +12,14 @@
   function doLogin($username, $password)
   {
     echo "trying to connect to mysql server" . PHP_EOL;
-    $con = mysqli_connect ("localhost", "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
+    //$con = $objConnect
+//    $con = mysqli_connect ("localhost", $username, $password, "userdata");// or die("Could not connect: " . mysql_error());
     
     // Check connection
-    if (mysqli_connect_errno())
+  /*  if (mysqli_connect_errno())
     {
       echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
-    }
+    }*/
     // $db = mysql_select_db ("root") or die("No database.");
     //session_start();
 
