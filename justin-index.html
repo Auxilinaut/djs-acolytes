@@ -1,0 +1,69 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+    <link href="index.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+    <div class="vidup">
+        <h1>Login</h1>
+        <div class="wrapper d-flex p-y-3">
+            <form name="bepatient">
+                <div class="d-flex p-y-1">
+                    <div>Username:</div>
+                    <div class="p-x-1">
+                        <input type="text" id="uname" name="username" required>
+                    </div>
+                    <div><span class="req">REQUIRED</span></div>
+                </div>
+                <div class="d-flex p-y-1">
+                    <div>Password:</div>
+                    <div class="p-x-1">
+                        <input type="password" id="pwd" name="pass" required>
+                    </div>
+                    <div><span class="req">REQUIRED</span></div>
+                </div>
+                <div class="d-flex p-y-1">
+                    <div><input type="button" onclick="submitRequest()" value="Login"></div>
+                    <div id="testresponse"></div>
+                </div>
+            </form>
+        </div>
+
+        <!--<video autoplay loop id="video-background" muted><source src="" type="video/mp4"></video>-->
+    </div>
+    <script>
+        var http = new XMLHttpRequest();
+
+        function submitRequest()
+        {
+            var uname = document.getElementById("uname").value;
+            var pwd = document.getElementById("pwd").value;
+
+            http.open("POST", "testRabbitMQClient.php", true);
+            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            http.onreadystatechange = receiveResponse;
+            http.send("uname=" + uname + "&pword=" + pwd);
+        }
+
+        function receiveResponse()
+        {
+            if (http.readyState == 4)
+            {
+                var res = http.responseText;
+                var testresponse = document.getElementById("testresponse");
+                testresponse.innerHTML = res;
+            }
+            else
+            {
+                var testresponse = document.getElementById("testresponse");
+                testresponse.innerHTML = "readystate not 4: " + http.readyState;
+            }
+        }
+
+    </script>
+</body>
+
+</html>
