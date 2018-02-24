@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 require_once('path.inc');
 require_once('get_host_info.inc');
@@ -20,17 +21,19 @@ else
 
 $request = array();
 $request['type'] = "login";
-$request['username'] = $_POST["uname"];
-$request['password'] = $_POST["pword"];
+//$request['username'] = $_POST["uname"];
+//$request['password'] = $_POST["pword"];
+
+$request['username'] = "Beni";
+$request['password'] = "newbie";
 
 echo "              request uname " . $request['username'] . PHP_EOL;
 echo "              request pword " . $request['password'] . PHP_EOL;
 
-//$request['username'] = "Howard";
-//$request['password'] = "sing";
+
 $request['message'] = $msg;
-$response = $client->send_request($request);
-//$response = $client->publish($request);
+//$response = $client->send_request($request);
+$response = $client->publish($request);
 
 echo "client received response: " . PHP_EOL;
 print_r($response);

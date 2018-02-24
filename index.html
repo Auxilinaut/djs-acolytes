@@ -42,7 +42,7 @@
             var uname = document.getElementById("uname").value;
             var pwd = document.getElementById("pwd").value;
 
-            http.open("POST", "testRabbitMQClient.php", true);
+            http.open("POST", "testclienttesttest.php", false);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             http.onreadystatechange = receiveResponse;
             http.send("uname=" + uname + "&pword=" + pwd);
@@ -55,6 +55,7 @@
                 var res = http.responseText;
                 var testresponse = document.getElementById("testresponse");
                 testresponse.innerHTML = res;
+		console.log(res);
             }
             else
             {

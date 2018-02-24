@@ -1,11 +1,15 @@
 <?php
 
+//require_once(__DIR__ . '/vendor/autoload.php');
+use PhpAmqpLib\Connection\AMQPStreamConnection;
+use PhpAmqpLib\Message\AMQPMessage;
+
 require_once('get_host_info.inc');
 
 class rabbitMQServer
 {
 	private $machine = "";
-	public  $BROKER_HOST;
+	public $BROKER_HOST;
 	private $BROKER_PORT;
 	private $USER;
 	private $PASSWORD;
@@ -189,37 +193,45 @@ class rabbitMQClient
 
 	function send_request($message)
 	{
+		echo "in send req";
 		$uid = uniqid();
 
 		$json_message = json_encode($message);
 		try
 		{
+	echo "inside the try";
       $params = array();
       $params['host'] = $this->BROKER_HOST;
       $params['port'] = $this->BROKER_PORT;
       $params['login'] = $this->USER;
       $params['password'] = $this->PASSWORD;
       $params['vhost'] = $this->VHOST;
-
+echo "have params";
 			$conn = new AMQPConnection($params);
+echo "made conn";
 			$conn->connect();
-
+echo "connected to conn";
 			$channel = new AMQPChannel($conn);
-
+			//$channel = $conn->channel();
+echo "made channel";
 			$exchange = new AMQPExchange($channel);
+echo "made exchange";
       $exchange->setName($this->exchange);
       $exchange->setType($this->exchange_type);
 
       $callback_queue = new AMQPQueue($channel);
+echo "made cb queue";
       $callback_queue->setName($this->queue."_response");
       $callback_queue->declare();
+echo "made cb queue";
 			$callback_queue->bind($exchange->getName(),$this->routing_key.".response");
 
 			$this->conn_queue = new AMQPQueue($channel);
 			$this->conn_queue->setName($this->queue);
 			$this->conn_queue->bind($exchange->getName(),$this->routing_key);
-
+			echo "bout 2 publish";
 			$exchange->publish($json_message,$this->routing_key,AMQP_NOPARAM,array('reply_to'=>$callback_queue->getName(),'correlation_id'=>$uid));
+
       $this->response_queue[$uid] = "waiting";
 			$callback_queue->consume(array($this,'process_response'));
 
@@ -229,6 +241,7 @@ class rabbitMQClient
 		}
 		catch(Exception $e)
 		{
+			echo "ERROR: " . $e->getMessage() . "";
 			die("failed to send message to exchange: ". $e->getMessage()."\n");
 		}
 	}
