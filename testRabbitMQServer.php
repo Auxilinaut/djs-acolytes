@@ -1,31 +1,17 @@
 #!/usr/bin/php
 <?php
-  include("connection.php"); 
+  include("vendor/autoload.php");
+  include("connections/mysqlconnection.php"); 
   require_once('path.inc');
   require_once('get_host_info.inc');
   require_once('rabbitMQLib.inc');
 
-  //$sessionid = NULL;
   echo "running server" . PHP_EOL;
   $sessionid = NULL;
 
-  function doLogin($username, $password)
+   function doLogin($username, $password)
   {
     echo "trying to connect to mysql server" . PHP_EOL;
-    //$con = $objConnect
-//    $con = mysqli_connect ("localhost", $username, $password, "userdata");// or die("Could not connect: " . mysql_error());
-    
-    // Check connection
-  /*  if (mysqli_connect_errno())
-    {
-      echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
-    }*/
-    // $db = mysql_select_db ("root") or die("No database.");
-    //session_start();
-
-    // lookup username in databas
-    // check password
-    
     echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
     $query = "SELECT * FROM logininfo WHERE username = '$username' and pword = '$password'";
     
@@ -75,7 +61,8 @@
     }
   }
 
-  $server = new rabbitMQServer("testRabbitMQ.ini", "testServer");
+
+  $server = new rabbitMQServer("testRabbitMQ.ini", "djs-acolytes");
 
   $server->process_requests('requestProcessor');
   exit();
