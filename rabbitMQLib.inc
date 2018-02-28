@@ -1,6 +1,6 @@
 <?php
 
-//require_once(__DIR__ . '/vendor/autoload.php');
+require_once(__DIR__ . '/vendor/autoload.php');
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
 
@@ -87,7 +87,7 @@ class rabbitMQServer
 		catch(Exception $e)
 		{
 			// ampq throws exception if get fails...
-            echo "error: rabbitMQServer: process_message: exception caught: ".$e;
+            //echo "error: rabbitMQServer: process_message: exception caught: ".$e;
 		}
 		// message does not require a response, send ack immediately
 		$body = $msg->getBody();
@@ -96,7 +96,7 @@ class rabbitMQServer
 		{
 			call_user_func($this->callback,$payload);
 		}
-		echo "processed one-way message\n";
+		//echo "processed one-way message\n";
 	}
 
 	function process_requests($callback)
@@ -193,43 +193,43 @@ class rabbitMQClient
 
 	function send_request($message)
 	{
-		echo "in send req";
+		//echo "in send req";
 		$uid = uniqid();
 
 		$json_message = json_encode($message);
 		try
 		{
-	echo "inside the try";
+	//echo "inside the try";
       $params = array();
       $params['host'] = $this->BROKER_HOST;
       $params['port'] = $this->BROKER_PORT;
       $params['login'] = $this->USER;
       $params['password'] = $this->PASSWORD;
       $params['vhost'] = $this->VHOST;
-echo "have params";
+//echo "have params";
 			$conn = new AMQPConnection($params);
-echo "made conn";
+//echo "made conn";
 			$conn->connect();
-echo "connected to conn";
+//echo "connected to conn";
 			$channel = new AMQPChannel($conn);
 			//$channel = $conn->channel();
-echo "made channel";
+//echo "made channel";
 			$exchange = new AMQPExchange($channel);
-echo "made exchange";
+//echo "made exchange";
       $exchange->setName($this->exchange);
       $exchange->setType($this->exchange_type);
 
       $callback_queue = new AMQPQueue($channel);
-echo "made cb queue";
+//echo "made cb queue";
       $callback_queue->setName($this->queue."_response");
       $callback_queue->declare();
-echo "made cb queue";
+//echo "made cb queue";
 			$callback_queue->bind($exchange->getName(),$this->routing_key.".response");
 
 			$this->conn_queue = new AMQPQueue($channel);
 			$this->conn_queue->setName($this->queue);
 			$this->conn_queue->bind($exchange->getName(),$this->routing_key);
-			echo "bout 2 publish";
+			//echo "bout 2 publish";
 			$exchange->publish($json_message,$this->routing_key,AMQP_NOPARAM,array('reply_to'=>$callback_queue->getName(),'correlation_id'=>$uid));
 
       $this->response_queue[$uid] = "waiting";
