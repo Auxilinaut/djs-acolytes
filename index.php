@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-xs-4">
                     <div><input type="button" onclick="submitRequest()" value="Login"></div>
-		    <div><input type="button" onclick="register()" value="Register"></div>
+		    <div><a href=""><input type="button" value="Register"></a></div>
                     <div id="testresponse"></div>
                 </div>
             </form>
@@ -58,7 +58,8 @@
                 var res = http.responseText;
                 var testresponse = document.getElementById("testresponse");
                 testresponse.innerHTML = res;
-		console.log(res);
+		var data = JSON.parse(res);
+		console.log("sessionid: " + data);
             }
             else
             {
