@@ -140,14 +140,7 @@
         break;
 	case "showTournaments":
         	tournaments();
-		if (isset($GLOBALS['tournaments']))
-		    {
-		      return array("returnCode" => '0', 'tournaments' => $GLOBALS['tournaments']);
-		    }
-		    else
-		    {
-		      return array("returnCode" => '1');
-		    }
+		return $GLOBALS['tournaments'];
         break;
 	case "createTournament":
         	createTournament($request['tname'], $request['tdate'], $request['tdesc']);
