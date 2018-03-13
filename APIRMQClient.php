@@ -1,6 +1,7 @@
 
 <?php
 //thisgoesupthere^^ #!/usr/bin/php
+echo "argv 1:  ". $argv[1]. PHP_EOL;
 require_once('path.inc');
 require_once('get_host_info.inc');
 require_once('rabbitMQLib.inc');
@@ -14,12 +15,15 @@ $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
 if (isset($argv[1]))
 {
   $msg = $argv[1];
+  //echo "argv 1:  ". $argv[1]. PHP_EOL;
+  //echo "msg:  " . $msg. PHP_EOL;
 }
 else
 {
   $msg = "test message";
 }
 
+echo "msg:  " . $msg. PHP_EOL;
 $request = array();
 $request['type'] = "getRank";
 //$request['type'] = $_POST["requestType"];

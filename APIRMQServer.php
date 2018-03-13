@@ -10,7 +10,7 @@
 
   function getrank($summoner)
   {
-    $key = "RGAPI-c349753d-e8e3-42c4-97dd-46ccd353c99a";
+    $key = "RGAPI-9efc7ea3-21e1-43a3-a421-0c89d90c4052";
     $url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/".$summoner."?api_key=" . $key;
 
     //echo $url;
@@ -47,8 +47,9 @@
     //echo $myJSON[0]->queueType;
 
     curl_close($ch);
+    //echo $myJSON[0]->tier.$myJSON[0]->rank;
     //output
-    return $myJSON[0]->tier.$myJSON[0]->rank
+    return $myJSON[0]->tier.$myJSON[0]->rank;
     //echo $myJSON[0]->tier;
     //echo $myJSON[0]->rank. PHP_EOL;
 
@@ -65,7 +66,7 @@
     }
     switch ($request['type'])
     {
-	case "getRank";
+	case "getRank":
 		getRank($request['summonername']);
 	break;
 	case "login":
