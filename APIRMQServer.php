@@ -67,42 +67,14 @@
     switch ($request['type'])
     {
 	case "getRank":
-		getRank($request['summonername']);
+		echo "Rank:  ".getRank($request['summonername'].PHP_EOL);
+		return getRank($request['summonername']);
 	break;
-	case "login":
-        	doLogin($request['username'], $request['password']);
-	break;
-	case "register":
-        	register($request['email'], $request['username'], $request['password']);
-        break;
-	case "showTournaments":
-        	tournaments();
-        break;
-	case "createTournament":
-        	createTournament($request['tname'], $request['tdate'], $request['tdesc']);
-        break;
-	case "viewProfile":
-        	viewProfile($request['username']);
-        break;
-	case "updateProfile":
-		updateProfile($request['email'], $request['username'], $request['password'], $request['ingamename'], $request['preftop'], $request['prefjungle'], $request['prefmid'], $request['prefadc'], $request['prefsupport']);
-	break;
-	case "validateSession":
-        	doValidate($request['sessionid']);
-        break;
 	default:
         	echo "ERROR: request type unhandled";
         break;
     }
 
-    if (isset($GLOBALS['sessionid']))
-    {
-      return array("returnCode" => '0', 'sessionid' => ''. $GLOBALS['sessionid'] .'');
-    }
-    else
-    {
-      return array("returnCode" => '1', 'sessionid' => '0');
-    }
   }
 
   $server = new rabbitMQServer("testRabbitMQ.ini", "testServer");
