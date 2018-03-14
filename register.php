@@ -42,21 +42,21 @@
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-                            <input type="text" id="uname" name="uname" class="form-control" placeholder="Enter Username" required/>
+                            <input type="text" id="uname" name="uname" class="form-control" placeholder="Username" required/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
-                            <input type="email" id="email" name="email" class="form-control" placeholder="Enter Email" required/>
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Email" required/>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input type="password" id="pw" name="pass" class="form-control" placeholder="Enter Password"
+                            <input type="password" id="pw" name="pass" class="form-control" placeholder="Password"
                                 required/>
                         </div>
                     </div>
@@ -65,7 +65,7 @@
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                            <input type="password" id="pw2" name="pass2" class="form-control" placeholder="Confirm your Password"
+                            <input type="password" id="pw2" name="pass2" class="form-control" placeholder="Confirm Password"
                                 required/>
                         </div>
                     </div>
@@ -106,12 +106,22 @@
 
         function registerReq()
         {
-            var uname = document.getElementById("uname").value;
             var pwd = document.getElementById("pw").value;
-            var email = http.open("POST", "registerClient.php", false);
-            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            http.onreadystatechange = receiveResponse;
-            http.send("uname=" + uname + "&pword=" + pwd);
+            var pw2 = document.getElementById("pw2").value;
+            if (pwd == pw2)
+            {
+                var uname = document.getElementById("uname").value;
+                var email = document.getElementById("email").value;
+                var ingamename = document.getElementById("ingamename").value;
+                http.open("POST", "registerClient.php", false);
+                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                http.onreadystatechange = receiveResponse;
+                http.send("uname=" + uname + "&password=" + pw + "&email=" + email + "&ingamename=" + ingamename);
+            }
+            else
+            {
+                $("response").innerHTML = "";
+            }
         }
 
         function receiveResponse()

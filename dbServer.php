@@ -30,7 +30,7 @@
     //echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
     $selectquery = "SELECT * FROM logininfo WHERE username = '$username' and pword = '$password'";
     
-    if ($logininfo = mysqli_query($con, $query))
+    if ($logininfo = mysqli_query($con, $selectquery))
     {
       //session_start();
 			$person = mysqli_fetch_array($logininfo, MYSQLI_ASSOC);
@@ -39,12 +39,13 @@
 
 			$logintime = time();
 
-			$updatequery = "UPDATE logininfo SET sessionid =  WHERE username = '$username' and pword = '$password'"; //FIX THIS
+			$updatequery = "UPDATE logininfo SET sessionid = '$sessionid', epochtime = '$logintime' WHERE username = '$username' and pword = '$password'";
 			
-			if ($con->query($updatequery) === TRUE) { //FIX THIS
-				echo "Record updated successfully";
+			if ($con->query($updatequery) === TRUE) {
+				echo "Updated sessionid/logintime successfully"; //(HEADER TO TOURNEY LOC)
+				header("Location:tournaments.php");
 			} else {
-				echo "Error updating record: " . $con->error;
+				echo "Error in updating sessionid/logintime: " . $con->error;
 			}
 		
 			$con->close();
@@ -72,7 +73,7 @@
 		//session_start();
 
 		//echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
-		$query = "INSERT INTO logininfo (username, pword, email) VALUES (firstname, lastname, email)";
+		$query = "INSERT INTO logininfo (username, pword, email) VALUES ('$username', '$password', '$email')";
 
 		if ($result = mysqli_query($con, $query))
 		{
@@ -131,7 +132,7 @@
 		
 	}
 
-  function getTournamnet($id)
+  function getTournament($id)
   {
 		$query = "SELECT * FROM tournamentinfo WHERE tournamentid = ". $id;
 
@@ -153,7 +154,8 @@
 				array_push($resArray, array($row['tournamentname'], $row['hostname'], $row['startTimeEpoch']));
 			}
 			
-			echo "tournamentinfo: " . PHP_EOL;S
+			echo "tournamentinfo: " . PHP_EOL;
+
 			var_dump($resArray);
 
 			// Initializing Session with value of PHP Variable
@@ -182,22 +184,14 @@
     {
 			case "login":
 				return login($request['username'], $request['password']);
-				/*if (isset($GLOBALS['sessionid']))
-				{
-					return array("returnCode" => '0', 'sessionid' => ''. $GLOBALS['sessionid'] .'');
-				}
-				else
-				{
-					return array("returnCode" => '1', 'sessionid' => '0');
-				}*/
 				break;
 			case "register":
-				register($request['email'], $request['username'], $request['password']);
+				register($request['username'], $request['password'], $request['email'], $request['ingamename']);
 				break;
 			case "showTournaments":
 				return tournaments();
 				break;
-			case "getTournamnet":
+			case "getTournament":
 				return getTournament();
 				break;
 			case "createTournament":
