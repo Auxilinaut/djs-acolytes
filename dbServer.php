@@ -131,6 +131,45 @@
 		
 	}
 
+  function getTournamnet($id)
+  {
+		$query = "SELECT * FROM tournamentinfo WHERE tournamentid = ". $id;
+
+		$con = mysqli_connect ($dbhost, "root", "Password12345", "userdata");
+		if (mysqli_connect_errno())
+		{
+			echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
+		}
+
+
+		if ($result = mysqli_query($con, $query))
+		{
+			$resArray = array();
+			//session_start();
+			//$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+			
+			/* fetch associative array */
+			while ($row = $result->fetch_assoc()) {
+				array_push($resArray, array($row['tournamentname'], $row['hostname'], $row['startTimeEpoch']));
+			}
+			
+			echo "tournamentinfo: " . PHP_EOL;S
+			var_dump($resArray);
+
+			// Initializing Session with value of PHP Variable
+			//echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
+			return $resArray;
+		}
+		else
+		{
+			echo "no tournament results";
+			return NULL;
+		}
+		
+  }
+
+
+
   function requestProcessor($request)
   {
     echo "received request" . PHP_EOL;
@@ -157,6 +196,9 @@
 				break;
 			case "showTournaments":
 				return tournaments();
+				break;
+			case "getTournamnet":
+				return getTournament();
 				break;
 			case "createTournament":
 				createTournament($request['tname'], $request['tdate'], $request['tdesc']);
