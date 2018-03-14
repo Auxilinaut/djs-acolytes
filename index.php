@@ -29,8 +29,8 @@
                 </div>
                 <div class="col-xs-4">
                     <div><input type="button" onclick="submitRequest()" value="Login"></div>
-		    <div><a href=""><input type="button" value="Register"></a></div>
-                    <div id="testresponse"></div>
+		            <div><a href="register.php"><input type="button" value="Register"></a></div>
+                    <div id="response"></div>
                 </div>
             </form>
         </div>
@@ -45,7 +45,7 @@
             var uname = document.getElementById("uname").value;
             var pwd = document.getElementById("pwd").value;
 
-            http.open("POST", "testRabbitMQClient.php", false);
+            http.open("POST", "loginClient.php", false);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             http.onreadystatechange = receiveResponse;
             http.send("uname=" + uname + "&pword=" + pwd);
@@ -56,14 +56,14 @@
             if (http.readyState == 4)
             {
                 var res = http.responseText;
-                var testresponse = document.getElementById("testresponse");
+                var testresponse = document.getElementById("response");
                 testresponse.innerHTML = res;
-		var data = JSON.parse(res);
-		console.log("sessionid: " + data);
+                var data = JSON.parse(res);
+                console.log("sessionid: " + data.sessionid);
             }
             else
             {
-                var testresponse = document.getElementById("testresponse");
+                var testresponse = document.getElementById("response");
                 testresponse.innerHTML = "readystate not 4: " + http.readyState;
             }
         }
