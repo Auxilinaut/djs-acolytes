@@ -41,14 +41,14 @@
 
 			$updatequery = "UPDATE logininfo SET sessionid =  WHERE username = '$username' and pword = '$password'"; //FIX THIS
 			
-			if ($conn->query($sql) === TRUE) { //FIX THIS
+			if ($con->query($updatequery) === TRUE) { //FIX THIS
 				echo "Record updated successfully";
 			} else {
-				echo "Error updating record: " . $conn->error;
+				echo "Error updating record: " . $con->error;
 			}
 		
-			$conn->close();
-
+			$con->close();
+			
 			return $sessionid;
     }
     else
@@ -71,9 +71,6 @@
 		// $db = mysql_select_db ("root") or die("No database.");
 		//session_start();
 
-		// lookup username in databas
-		// check password
-
 		//echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
 		$query = "INSERT INTO logininfo (username, pword, email) VALUES (firstname, lastname, email)";
 
@@ -94,8 +91,6 @@
 
   function tournaments()
   {
-		$GLOBALS['tournaments'] = array();
-
 		$con = mysqli_connect ($dbhost, "root", "Password12345", "userdata");
 
 		// Check connection
@@ -118,7 +113,7 @@
 			}
 			
 			echo "tournamentinfo: " . PHP_EOL;
-			var_dump($resArray);
+			//var_dump($resArray);
 
 			// Initializing Session with value of PHP Variable
 			//echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
@@ -129,7 +124,12 @@
 			echo "no tournament results";
 			return NULL;
 		}
-  }
+	}
+	
+	function validate($sessionid)
+	{
+		
+	}
 
   function requestProcessor($request)
   {

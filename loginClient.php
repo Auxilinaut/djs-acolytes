@@ -36,6 +36,7 @@ if (isset($msg))
 {
   $request['message'] = $msg;
 }
+
 $response = $client->send_request($request);
 //$response = $client->publish($request);
 
