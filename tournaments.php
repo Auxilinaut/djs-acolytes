@@ -38,13 +38,13 @@
                 var res = http.responseText;
                 var upcoming = document.getElementById("upcoming");
                 upcoming.innerHTML = res;
-		var data = JSON.parse(res);
-		var tourneyCount = length(data.tournaments);
-		console.dir(data);
-		for (var i = 0; i < tourneyCount; i++)
-		{
-			$("<p>Test</p>").appendTo(".upcoming");
-		}
+                var data = JSON.parse(res);
+                var tourneyCount = length(data.tournaments);
+                console.dir(data);
+                for (var i = 0; i < tourneyCount; i++)
+                {
+                    $("<p>Test</p>").appendTo(".upcoming");
+                }
             }
             else
             {
@@ -54,7 +54,7 @@
         }
 
 	function length(obj) {
-    		return Object.keys(obj).length;
+    	return Object.keys(obj).length;
 	}
 
     </script>
