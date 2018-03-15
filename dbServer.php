@@ -6,7 +6,7 @@
 
 	echo "running server" . PHP_EOL;
 	
-	$dbhost = "192.168.0.110";
+	$dbhost = "localhost";
 
 
 
@@ -16,7 +16,6 @@
 
   function login($username, $password)
   {
-	  global $dbhost;
     echo "trying to connect to mysql server" . PHP_EOL;
     $con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
     
