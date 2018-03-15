@@ -70,7 +70,7 @@
 		}
 		// $db = mysql_select_db ("root") or die("No database.");
 		//session_start();
-		echo "this should be an ingamename: ". $ingamename . PHP_EOL;
+		echo "ingamename: ". $ingamename . PHP_EOL;
 
 		//echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
 		$mmr = exec ('php APIRMQClient.php '. $ingamename);
@@ -92,17 +92,25 @@
 				$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 				$GLOBALS['sessionid'] = $row["id"];  // Initializing Session with value of PHP Variable
 				echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
+
+				if ($con->query($updatequery) === TRUE) {
+					echo "Updated sessionid/logintime successfully"; //(HEADER TO TOURNEY LOC)
+				} else {
+					echo "Error in updating sessionid/logintime: " . $con->error;
+				}
+		
+				$con->close();
 				return true;
 			}
 			else
 			{
-				echo "could not register";
+				echo "unable to insert into logininfo";
 				return false;
 			}
 		}
 		else
 		{
-			echo "no sessionid";
+			echo "unable to insert into logininfo";
 			return false;
 		}
 
@@ -132,7 +140,7 @@
 				array_push($resArray, array($row['tournamentname'], $row['hostname'], $row['startTimeEpoch']));
 			}
 			
-			echo "tournamentinfo: " . PHP_EOL;
+			//echo "tournamentinfo: " . PHP_EOL;
 			//var_dump($resArray);
 
 			// Initializing Session with value of PHP Variable
@@ -189,40 +197,38 @@ function validate($sessionid)
 
   function getTournament($id)
   {
-		$query = "SELECT * FROM tournamentinfo WHERE tournamentid = ". $id;
+	$query = "SELECT * FROM tournamentinfo WHERE tournamentid = ". $id;
 
-		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
-		if (mysqli_connect_errno())
-		{
-			echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
-		}
+	$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
+	if (mysqli_connect_errno())
+	{
+		echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
+	}
 
-
-		if ($result = mysqli_query($con, $query))
-		{
-			$resArray = array();
-			//session_start();
-			//$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-			
-			/* fetch associative array */
-			while ($row = $result->fetch_assoc()) {
-				array_push($resArray, array($row['tournamentname'], $row['hostname'], $row['startTimeEpoch']));
-			}
-			
-			echo "tournamentinfo: " . PHP_EOL;
-
-			var_dump($resArray);
-
-			// Initializing Session with value of PHP Variable
-			//echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
-			return $resArray;
-		}
-		else
-		{
-			echo "no tournament results";
-			return NULL;
+	if ($result = mysqli_query($con, $query))
+	{
+		$resArray = array();
+		//session_start();
+		//$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+		
+		/* fetch associative array */
+		while ($row = $result->fetch_assoc()) {
+			array_push($resArray, array($row['tournamentname'], $row['hostname'], $row['startTimeEpoch']));
 		}
 		
+		echo "tournamentinfo: " . PHP_EOL;
+
+		var_dump($resArray);
+
+		// Initializing Session with value of PHP Variable
+		//echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
+		return $resArray;
+	}
+	else
+	{
+		echo "no tournament results";
+		return NULL;
+	}
   }
 
 
@@ -237,33 +243,33 @@ function validate($sessionid)
     }
     switch ($request['type'])
     {
-			case "login":
-				return login($request['username'], $request['password']);
-				break;
-			case "register":
-				register($request['username'], $request['password'], $request['email'], $request['ingamename']);
-				break;
-			case "showTournaments":
-				return tournaments();
-				break;
-			case "getTournament":
-				return getTournament();
-				break;
-			case "createTournament":
-				createTournament($request['tname'], $request['tdate'], $request['tdesc']);
-				break;
-			case "viewProfile":
-				viewProfile($request['username']);
-				break;
-			case "updateProfile":
-				updateProfile($request['email'], $request['username'], $request['password'], $request['ingamename'], $request['preftop'], $request['prefjungle'], $request['prefmid'], $request['prefadc'], $request['prefsupport']);
-				break;
-			case "validateSession":
-				validate($request['sessionid']);
-				break;
-			default:
-				echo "ERROR: request type unhandled";
-				break;
+		case "login":
+			return login($request['username'], $request['password']);
+			break;
+		case "register":
+			return register($request['username'], $request['password'], $request['email'], $request['ingamename']);
+			break;
+		case "showTournaments":
+			return tournaments();
+			break;
+		case "getTournament":
+			return getTournament($request['id']);
+			break;
+		case "createTournament":
+			createTournament($request['tname'], $request['tdate'], $request['tdesc']);
+			break;
+		case "viewProfile":
+			viewProfile($request['username']);
+			break;
+		case "updateProfile":
+			updateProfile($request['email'], $request['username'], $request['password'], $request['ingamename'], $request['preftop'], $request['prefjungle'], $request['prefmid'], $request['prefadc'], $request['prefsupport']);
+			break;
+		case "validateSession":
+			validate($request['sessionid']);
+			break;
+		default:
+			echo "ERROR: request type unhandled";
+			break;
     }
 
   }
