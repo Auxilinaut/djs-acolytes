@@ -60,7 +60,7 @@
   function requestProcessor($request)
   {
     echo "received request" . PHP_EOL;
-    echo "summoner name: ". $request['summonername'];
+    //echo "summoner name: ". $request['summonername'];
     //var_dump($request);
     if(!isset($request['type']))
     {
