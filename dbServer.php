@@ -65,7 +65,7 @@
 		}
   }
 
-  function register($email, $username, $password)
+  function register($email, $username, $password, $ingamename)
   {
 		echo "trying to connect to mysql server" . PHP_EOL;
 		$con = mysqli_connect ($dbhost, "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
@@ -79,9 +79,9 @@
 		//session_start();
 
 		//echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
-		$mmr = exec ('php APIRMQClient.php '. $summonername)
+		$mmr = exec ('php APIRMQClient.php '. $summonername);
 		
-		$query = "INSERT INTO logininfo (username, pword, email ) VALUES ('$username', '$password', '$email')";
+		$query = "INSERT INTO logininfo (username, pword, email, ingamename) VALUES ('$username', '$password', '$email', '$ingamename')";
 
 		if ($result = mysqli_query($con, $query))
 		{
@@ -96,7 +96,7 @@
 			echo "no sessionid";
 			return false;
 		}
-		$query = "INSERT INTO playerinfo (username, pword, ign, mmr) VALUES ('$username', '$password', '$summonername', '$mmr')";
+		$query = "INSERT INTO playerinfo (username, ign, mmr) VALUES ('$username', '$summonername', '$mmr')";
 
 		if ($result = mysqli_query($con, $query))
 		{
@@ -111,7 +111,6 @@
 			echo "no sessionid";
 			return false;
 		}
-  }
   }
 
   function tournaments()
