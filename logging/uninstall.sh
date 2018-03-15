@@ -2,16 +2,16 @@
 
 # We won't need this but if we do for some reason.
 
-echo -e " ${RED}Undoing changes...${NC} "
+echo -e "\e[1;31mUndoing changes....\e[0m"
 
 apt-get -y remove rsyslog
 
-rm /etc/rsyslog.* 
+rm /etc/rsyslog.conf
 
 rm /etc/rsyslog.d/10-rsyslog.conf
 
 
-echo -e " ${RED}Cleaning up...${NC} "
+echo -e "\e[1;31mCleaning up.... $USER\e[0m"
 
 apt-get -y autoremove && apt-get autoclean
 
