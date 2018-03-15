@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
   require_once('path.inc');
   require_once('get_host_info.inc');
@@ -6,7 +5,6 @@
 
   //$sessionid = NULL;
   echo "running server" . PHP_EOL;
-  $sessionid = NULL;
 
   function getrank($summoner)
   {
@@ -24,10 +22,19 @@
     $result = curl_exec($ch);
     //echo $ch;
     //echo gettype($result). PHP_EOL;
-    //echo $result. PHP_EOL;
+    echo $result. PHP_EOL;
     $myJSON = json_decode($result);
+	
+	
+    if(!isset($myJSON->id)) 
+    {
+	$cmd = "php errorClient.php API 'User: " . $summoner . " Does not exist' 1";
+	echo $test . PHP_EOL;
+        exec ($cmd);
+	return "ERROR: User not found";
+    }
     //$temp = $myJSON->accoutId;
-    echo $myJSON->id . PHP_EOL;
+    //echo $myJSON->id . PHP_EOL;
  
     curl_close($ch);
     $url = "https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/". $myJSON->id . "?api_key=". $key;
@@ -71,7 +78,7 @@
 	case "getRank":
 		//echo "Rank:  ".getRank($request['summonername'].PHP_EOL);
 		return getRank($request['summonername']);
-	break;
+		break;
 	default:
         	echo "ERROR: request type unhandled";
         break;
@@ -79,7 +86,7 @@
 
   }
 
-  $server = new rabbitMQServer("testRabbitMQ.ini", "testServer");
+  $server = new rabbitMQServer("APIRMQ.ini", "testServer");
 
   $server->process_requests('requestProcessor');
   exit();

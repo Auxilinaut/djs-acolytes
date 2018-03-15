@@ -3,18 +3,28 @@
   require_once('get_host_info.inc');
   require_once('rabbitMQLib.inc');
 
-  //$sessionid = NULL;
   echo "running server" . PHP_EOL;
-  $sessionid = NULL;
   function logError($errorType, $errorMsg, $errorId)
   {
-	echo $errorType . PHP_EOL;
-	echo $errorMsg . PHP_EOL;
-	echo $errorId . PHP_EOL;
-	$errorMsg = $errorType . ' ' . $errorMsg . ' ' . $errorId . ' ' ;
+	echo $errorType	. PHP_EOL;
+	echo $errorMsg 	. PHP_EOL;
+	echo $errorId 	. PHP_EOL;
+	$errorMsg = $errorType . ' ' . $errorMsg . ' ' . $errorId . ' ' ;	
 	echo $errorMsg;
-	$errorFile = file_put_contents("Logs/logs.txt", $errorMsg . PHP_EOL, FILE_APPEND | LOCK_EX);
 
+
+	switch ($errorType)
+	{
+		case"API":
+			$file = 'Logs/APIlogs.txt';
+			break;
+		default:
+        		$file = 'Logs/logs.txt';
+     			break;
+	}
+
+
+	$errorFile = file_put_contents($file, $errorMsg . PHP_EOL, FILE_APPEND | LOCK_EX);
 
 	return "it worked take that";
   }
@@ -39,7 +49,7 @@
 
   }
 
-  $server = new rabbitMQServer("testRabbitMQ.ini", "testServer");
+  $server = new rabbitMQServer("errorRMQ.ini", "testServer");
 
   $server->process_requests('requestProcessor');
   exit();
