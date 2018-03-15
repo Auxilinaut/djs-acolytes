@@ -171,7 +171,7 @@ function validate($sessionid)
 		}
 		else
 		{
-			$query = "UPDATE logininfo set epochtime = ". time() . " WHERE sessionid = ". $sessionid;
+			$query = "UPDATE logininfo SET epochtime = ". time() . " WHERE sessionid = ". $sessionid;
 			$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
 			if (mysqli_connect_errno())
 			{
