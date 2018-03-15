@@ -42,7 +42,7 @@ $response = $client->send_request($request);
 
 //echo "client received response: " . PHP_EOL;
 print_r($response);
-if ($response['sessionid'] != 0)
+if ($response != "0")
 {
   header("Location:tournaments.php");
 }

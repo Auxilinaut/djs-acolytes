@@ -32,33 +32,33 @@
     
     if ($logininfo = mysqli_query($con, $selectquery))
     {
-      //session_start();
-			$person = mysqli_fetch_array($logininfo, MYSQLI_ASSOC);
-			
-			$sessionid = hash("sha256", $person['id'] . time());  // Initializing Session with value of PHP Variable
-
-			$logintime = time();
-
-			$updatequery = "UPDATE logininfo SET sessionid = '$sessionid', epochtime = '$logintime' WHERE username = '$username' and pword = '$password'";
-			
-			if ($con->query($updatequery) === TRUE) {
-				echo "Updated sessionid/logintime successfully"; //(HEADER TO TOURNEY LOC)
-			} else {
-				echo "Error in updating sessionid/logintime: " . $con->error;
-			}
+		//session_start();
+		$person = mysqli_fetch_array($logininfo, MYSQLI_ASSOC);
 		
-			$con->close();
-			
-			return $sessionid;
+		$sessionid = hash("sha256", $person['id'] . time());  // Initializing Session with value of PHP Variable
+
+		$logintime = time();
+
+		$updatequery = "UPDATE logininfo SET sessionid = '$sessionid', epochtime = '$logintime' WHERE username = '$username' and pword = '$password'";
+		
+		if ($con->query($updatequery) === TRUE) {
+			echo "Updated sessionid/logintime successfully"; //(HEADER TO TOURNEY LOC)
+		} else {
+			echo "Error in updating sessionid/logintime: " . $con->error;
+		}
+
+		$con->close();
+		
+		return $sessionid;
     }
     else
     {
       echo "no user with that info";
       return 0;
-		}
+	}
   }
 
-  function register($email, $username, $password, $ingamename)
+  function register($username, $password, $email, $ingamename)
   {
 		echo "trying to connect to mysql server" . PHP_EOL;
 		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
@@ -70,40 +70,43 @@
 		}
 		// $db = mysql_select_db ("root") or die("No database.");
 		//session_start();
+		echo "this should be an ingamename: ". $ingamename . PHP_EOL;
 
 		//echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
 		$mmr = exec ('php APIRMQClient.php '. $ingamename);
 		
 		$query = "INSERT INTO logininfo (username, pword, email, ingamename) VALUES ('$username', '$password', '$email', '$ingamename')";
 
-		if ($result = mysqli_query($con, $query))
+		if ($con->query($query) === TRUE)
 		{
 			//session_start();
 			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-			$GLOBALS['sessionid'] = $row["id"];  // Initializing Session with value of PHP Variable
-			echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
-			return true;
-		}
-		else
-		{
-			echo "no sessionid";
-			return false;
-		}
-		$query = "INSERT INTO playerinfo (username, ign, mmr) VALUES ('$username', '$ingamename', '$mmr')";
+			//$GLOBALS['sessionid'] = $row["id"];  // Initializing Session with value of PHP Variable
+			//echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
 
-		if ($result = mysqli_query($con, $query))
-		{
-			//session_start();
-			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-			$GLOBALS['sessionid'] = $row["id"];  // Initializing Session with value of PHP Variable
-			echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
-			return true;
+			$query = "INSERT INTO playerinfo (username, ign, mmr) VALUES ('$username', '$ingamename', '$mmr')";
+
+			if ($result = mysqli_query($con, $query))
+			{
+				//session_start();
+				$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+				$GLOBALS['sessionid'] = $row["id"];  // Initializing Session with value of PHP Variable
+				echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
+				return true;
+			}
+			else
+			{
+				echo "could not register";
+				return false;
+			}
 		}
 		else
 		{
 			echo "no sessionid";
 			return false;
 		}
+
+		
   }
 
   function tournaments()

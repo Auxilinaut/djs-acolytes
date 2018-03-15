@@ -25,7 +25,7 @@ $request['type'] = "register";
 $request['username'] = $_POST["uname"];
 $request['password'] = $_POST["password"]; //FIX
 $request['email'] = $_POST["email"];
-$request['ingamename'] = $_POST["email"];
+$request['ingamename'] = $_POST["ingamename"];
 
 //$request['username'] = "Howard";
 //$request['password'] = "sing";
