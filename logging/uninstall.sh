@@ -11,7 +11,7 @@ rm /etc/rsyslog.conf
 rm /etc/rsyslog.d/10-rsyslog.conf
 
 
-echo -e "\e[1;31mCleaning up.... $USER\e[0m"
+echo -e "\e[1;31mCleaning up....\e[0m"
 
 apt-get -y autoremove && apt-get autoclean
 
