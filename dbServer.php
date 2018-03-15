@@ -16,8 +16,9 @@
 
   function login($username, $password)
   {
+	  global $dbhost;
     echo "trying to connect to mysql server" . PHP_EOL;
-    $con = mysqli_connect ($dbhost, "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
+    $con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
     
     // Check connection
     if (mysqli_connect_errno())
@@ -68,7 +69,7 @@
   function register($email, $username, $password, $ingamename)
   {
 		echo "trying to connect to mysql server" . PHP_EOL;
-		$con = mysqli_connect ($dbhost, "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
+		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
 
 		// Check connection
 		if (mysqli_connect_errno())
@@ -115,7 +116,7 @@
 
   function tournaments()
   {
-		$con = mysqli_connect ($dbhost, "root", "Password12345", "userdata");
+		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
 
 		// Check connection
 		if (mysqli_connect_errno())
@@ -159,7 +160,7 @@
   {
 		$query = "SELECT * FROM tournamentinfo WHERE tournamentid = ". $id;
 
-		$con = mysqli_connect ($dbhost, "root", "Password12345", "userdata");
+		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
 		if (mysqli_connect_errno())
 		{
 			echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
