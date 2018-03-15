@@ -22,9 +22,10 @@ else
 $request = array();
 $request['type'] = "register";
 //$request['type'] = $_POST["requestType"];
-$request['tname'] = $_POST["tname"];
-$request['tdate'] = $_POST["tdate"]; //FIX
-$request['tdesc'] = $_POST["tdesc"];
+$request['username'] = $_POST["uname"];
+$request['password'] = $_POST["password"]; //FIX
+$request['email'] = $_POST["email"];
+$request['ingamename'] = $_POST["email"];
 
 //$request['username'] = "Howard";
 //$request['password'] = "sing";

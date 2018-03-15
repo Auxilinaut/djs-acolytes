@@ -8,12 +8,6 @@
 	
 	$dbhost = "localhost";
 
-
-
-//********************************placeholder variable***************************************
-	$summonername = "nizzy2k11";
-//********************************placeholder variable***************************************
-
   function login($username, $password)
   {
     echo "trying to connect to mysql server" . PHP_EOL;
@@ -49,7 +43,6 @@
 			
 			if ($con->query($updatequery) === TRUE) {
 				echo "Updated sessionid/logintime successfully"; //(HEADER TO TOURNEY LOC)
-				header("Location:tournaments.php");
 			} else {
 				echo "Error in updating sessionid/logintime: " . $con->error;
 			}
@@ -79,7 +72,7 @@
 		//session_start();
 
 		//echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
-		$mmr = exec ('php APIRMQClient.php '. $summonername);
+		$mmr = exec ('php APIRMQClient.php '. $ingamename);
 		
 		$query = "INSERT INTO logininfo (username, pword, email, ingamename) VALUES ('$username', '$password', '$email', '$ingamename')";
 
@@ -96,7 +89,7 @@
 			echo "no sessionid";
 			return false;
 		}
-		$query = "INSERT INTO playerinfo (username, ign, mmr) VALUES ('$username', '$summonername', '$mmr')";
+		$query = "INSERT INTO playerinfo (username, ign, mmr) VALUES ('$username', '$ingamename', '$mmr')";
 
 		if ($result = mysqli_query($con, $query))
 		{
