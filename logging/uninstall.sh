@@ -8,7 +8,7 @@ apt-get -y remove rsyslog
 
 rm /etc/rsyslog.conf
 
-rm /etc/rsyslog.d/10-rsyslog.conf
+rm -rf /etc/rsyslog.d/
 
 
 echo -e "\e[1;31mCleaning up....\e[0m"
