@@ -160,7 +160,7 @@ function validate($sessionid)
 		}
 		else
 		{
-			$query = "UPDATE logininfo set epochtime = ". time() . " WHERE sessionid = ". $sessionid;
+			$query = "UPDATE logininfo SET epochtime = ". time() . " WHERE sessionid = ". $sessionid;
 			$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
 			if (mysqli_connect_errno())
 			{
@@ -254,7 +254,7 @@ function validate($sessionid)
 				break;
 			case "updateProfile":
 				updateProfile($request['email'], $request['username'], $request['password'], $request['ingamename'], $request['preftop'], $request['prefjungle'], $request['prefmid'], $request['prefadc'], $request['prefsupport']);
-				break;
+				break;ss
 			case "validateSession":
 				validate($request['sessionid']);
 				break;
