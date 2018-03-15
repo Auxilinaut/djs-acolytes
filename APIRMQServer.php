@@ -24,12 +24,13 @@
     //echo gettype($result). PHP_EOL;
     echo $result. PHP_EOL;
     $myJSON = json_decode($result);
-	$test = "php errorClient.php API 'User: " . $summoner . " Does not exist' 1";
+	
 	
     if(!isset($myJSON->id)) 
     {
+	$cmd = "php errorClient.php API 'User: " . $summoner . " Does not exist' 1";
 	echo $test . PHP_EOL;
-        exec ($test);
+        exec ($cmd);
 	return "ERROR: User not found";
     }
     //$temp = $myJSON->accoutId;

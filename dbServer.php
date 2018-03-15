@@ -49,13 +49,13 @@
 		
 			$con->close();
 			
-			return $sessionid;
-    }
-    else
-    {
-      echo "no user with that info";
-      return 0;
-		}
+		return $sessionid;
+	}
+	else
+	{
+	echo "no user with that info";
+	return 0;
+	}
   }
 
   function register($email, $username, $password, $ingamename)
@@ -143,10 +143,46 @@
 		}
 	}
 	
-	function validate($sessionid)
+function validate($sessionid)
+{
+	$query = "SELECT epochtime FROM logininfo WHERE sessionid = ". $sessionid;
+	$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
+	if (mysqli_connect_errno())
 	{
-		
+		echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
 	}
+	if ($result = mysqli_query($con, $query))
+	{
+
+		if( (time() - $result) > 600)
+		{
+			return false;		
+		}
+		else
+		{
+			$query = "UPDATE logininfo set epochtime = ". time() . " WHERE sessionid = ". $sessionid;
+			$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
+			if (mysqli_connect_errno())
+			{
+				echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
+			}
+			if ($result = mysqli_query($con, $query))
+			{
+				return true;
+			}
+			else
+		  	{
+				echo "Session not found";
+		  		return NULL;
+		  	}
+		}
+  	}
+  	else
+  	{
+		echo "Session not found";
+  		return NULL;
+  	}
+  }
 
   function getTournament($id)
   {
