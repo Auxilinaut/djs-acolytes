@@ -8,7 +8,7 @@ require_once('rabbitMQLib.inc');
 
 //echo "we are about to connect" . PHP_EOL;
 
-$client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
+$client = new rabbitMQClient("APIRMQ.ini", "testServer");
 
 //echo "we made client" . PHP_EOL;
 //echo $argv[1]. PHP_EOL;
