@@ -1,4 +1,3 @@
-
 <?php
 //thisgoesupthere^^ #!/usr/bin/php
 require_once('path.inc');
@@ -21,10 +20,11 @@ else
 }
 
 $request = array();
-$request['type'] = "login";
+$request['type'] = "register";
 //$request['type'] = $_POST["requestType"];
-$request['username'] = $_POST["uname"];
-$request['password'] = $_POST["pword"];
+$request['tname'] = $_POST["tname"];
+$request['tdate'] = $_POST["tdate"]; //FIX
+$request['tdesc'] = $_POST["tdesc"];
 
 //$request['username'] = "Howard";
 //$request['password'] = "sing";
