@@ -8,6 +8,12 @@
 	
 	$dbhost = "192.168.0.110";
 
+
+
+//********************************placeholder variable***************************************
+	$summonername = "nizzy2k11";
+//********************************placeholder variable***************************************
+
   function login($username, $password)
   {
     echo "trying to connect to mysql server" . PHP_EOL;
@@ -73,7 +79,9 @@
 		//session_start();
 
 		//echo "query consists of username " . $username . " and password " . $password . PHP_EOL;
-		$query = "INSERT INTO logininfo (username, pword, email) VALUES ('$username', '$password', '$email')";
+		$mmr = exec ('php APIRMQClient.php '. $summonername)
+		
+		$query = "INSERT INTO logininfo (username, pword, email ) VALUES ('$username', '$password', '$email')";
 
 		if ($result = mysqli_query($con, $query))
 		{
@@ -88,6 +96,22 @@
 			echo "no sessionid";
 			return false;
 		}
+		$query = "INSERT INTO playerinfo (username, pword, ign, mmr) VALUES ('$username', '$password', '$summonername', '$mmr')";
+
+		if ($result = mysqli_query($con, $query))
+		{
+			//session_start();
+			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+			$GLOBALS['sessionid'] = $row["id"];  // Initializing Session with value of PHP Variable
+			echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
+			return true;
+		}
+		else
+		{
+			echo "no sessionid";
+			return false;
+		}
+  }
   }
 
   function tournaments()

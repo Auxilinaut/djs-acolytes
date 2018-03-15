@@ -10,7 +10,7 @@
 
   function getrank($summoner)
   {
-    $key = "RGAPI-9efc7ea3-21e1-43a3-a421-0c89d90c4052";
+    $key = "RGAPI-9efc7ea3-21e1-43a3-a421-0c89d90c4052"; 
     $url = "https://na1.api.riotgames.com/lol/summoner/v3/summoners/by-name/".$summoner."?api_key=" . $key;
 
     //echo $url;
@@ -27,7 +27,7 @@
     //echo $result. PHP_EOL;
     $myJSON = json_decode($result);
     //$temp = $myJSON->accoutId;
-    //echo $myJSON->id . PHP_EOL;
+    echo $myJSON->id . PHP_EOL;
  
     curl_close($ch);
     $url = "https://na1.api.riotgames.com/lol/league/v3/positions/by-summoner/". $myJSON->id . "?api_key=". $key;
@@ -49,6 +49,7 @@
     curl_close($ch);
     //echo $myJSON[0]->tier.$myJSON[0]->rank;
     //output
+    echo $myJSON[0]->tier.$myJSON[0]->rank . PHP_EOL;
     return $myJSON[0]->tier.$myJSON[0]->rank;
     //echo $myJSON[0]->tier;
     //echo $myJSON[0]->rank. PHP_EOL;
@@ -59,6 +60,7 @@
   function requestProcessor($request)
   {
     echo "received request" . PHP_EOL;
+    echo "summoner name: ". $request['summonername'];
     //var_dump($request);
     if(!isset($request['type']))
     {
@@ -67,7 +69,7 @@
     switch ($request['type'])
     {
 	case "getRank":
-		echo "Rank:  ".getRank($request['summonername'].PHP_EOL);
+		//echo "Rank:  ".getRank($request['summonername'].PHP_EOL);
 		return getRank($request['summonername']);
 	break;
 	default:

@@ -11,6 +11,7 @@ require_once('rabbitMQLib.inc');
 $client = new rabbitMQClient("testRabbitMQ.ini", "testServer");
 
 //echo "we made client" . PHP_EOL;
+//echo $argv[1]. PHP_EOL;
 
 if (isset($argv[1]))
 {
@@ -23,11 +24,11 @@ else
   $msg = "test message";
 }
 
-echo "msg:  " . $msg. PHP_EOL;
+//echo "msg:  " . $msg. PHP_EOL;
 $request = array();
 $request['type'] = "getRank";
 //$request['type'] = $_POST["requestType"];
-$request['summonername'] = "nizzy2k11";
+$request['summonername'] = $argv[1];
 //$request['password'] = $_POST["pword"];
 
 //$request['username'] = "Howard";
@@ -42,7 +43,8 @@ $response = $client->send_request($request);
 //$response = $client->publish($request);
 
 //echo "client received response: " . PHP_EOL;
-echo $response .PHP_EOL;
+//echo $response .PHP_EOL;
+return $response;
 //echo "\n\n";
 
 //echo $argv[0]." END".PHP_EOL;
