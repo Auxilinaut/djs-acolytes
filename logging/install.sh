@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Updating your system..."
+echo -e " ${RED}Updating your system...${NC} "
 
 apt-get update
 
@@ -8,7 +8,7 @@ apt-get -y dist-upgrade
 
 apt-get -y upgrade
 
-echo "Cleaning up..."
+echo -e " ${RED}Cleaning up...${NC} "
 
 apt-get -y autoremove && apt-get autoclean
 
@@ -23,19 +23,19 @@ select opt in "${options[@]}"
 do
     case $opt in
         "Remote server")
-	    echo "Installing and configuring rsyslog..."
+            echo -e " ${RED}Installing and configuring rsyslog...${NC} "
             apt-get -y install rsyslog
 	    mv /etc/rsyslog.conf /etc/rsyslog.conf.bk
  	    cp rsyslog.conf /etc/
- 	    echo "Remote server configration done."
+            echo -e " ${RED}Remote server configration done.${NC} "
             break
             ;;
         "Local server")
-            echo "Configuring rsyslog on local server....."
+            echo -e " ${RED}Configuring rsyslog on local server.....${NC} "
             touch /etc/rsyslog.d/10-rsyslog.conf
 	    echo "*.*   @remote.server:514" > /etc/rsyslog.d/10-rsyslog.conf
 	    service rsyslog restart
-            echo "Local server configuration done."
+            echo -e " ${RED}Local server configuration done.${NC} "
             break
             ;;
         "Quit")
