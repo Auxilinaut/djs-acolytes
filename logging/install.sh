@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -e " ${RED}Updating your system...${NC} "
+echo -e "\e[1;31mUpdating your system....\e[0m"
 
 apt-get update
 
@@ -8,7 +8,7 @@ apt-get -y dist-upgrade
 
 apt-get -y upgrade
 
-echo -e " ${RED}Cleaning up...${NC} "
+echo -e "\e[1;31mCleaning up.....\e[0m"
 
 apt-get -y autoremove && apt-get autoclean
 
@@ -23,23 +23,23 @@ select opt in "${options[@]}"
 do
     case $opt in
         "Remote server")
-            echo -e " ${RED}Installing and configuring rsyslog...${NC} "
+            echo -e "\e[1;31mInstalling and configuring Rsyslog.....\e[0m"
             apt-get -y install rsyslog
 	    mv /etc/rsyslog.conf /etc/rsyslog.conf.bk
  	    cp rsyslog.conf /etc/
-            echo -e " ${RED}Remote server configration done.${NC} "
+	    echo -e "\e[1;31mRemote server configuration done.\e[0m"
             break
             ;;
         "Local server")
-            echo -e " ${RED}Configuring rsyslog on local server.....${NC} "
+            echo -e "\e[1;31mConfiguring Rsyslog on local server\e[0m"
             touch /etc/rsyslog.d/10-rsyslog.conf
 	    echo "*.*   @remote.server:514" > /etc/rsyslog.d/10-rsyslog.conf
 	    service rsyslog restart
-            echo -e " ${RED}Local server configuration done.${NC} "
+	    echo -e "\e[1;31mLocal server configuration done.\e[0m"
             break
             ;;
         "Quit")
-          echo "Goodbye $USER"
+	  echo -e "\e[1;31mGoodbye $USER\e[0m"
           exit
             ;;        
         "Exit")
