@@ -41,10 +41,10 @@ $response = $client->send_request($request);
 //$response = $client->publish($request);
 
 //echo "client received response: " . PHP_EOL;
-print_r($response);
+//print_r($response);
 if ($response != "0")
 {
-  header("Location:tournaments.php");
+  header('Location:tournaments.php');
 }
 //echo "\n\n";
 

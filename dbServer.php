@@ -43,6 +43,7 @@
 		
 		if ($con->query($updatequery) === TRUE) {
 			echo "Updated sessionid/logintime successfully"; //(HEADER TO TOURNEY LOC)
+			return $sessionid;
 		} else {
 			echo "Error in updating sessionid/logintime: " . $con->error;
 		}

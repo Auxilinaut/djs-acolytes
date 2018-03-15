@@ -59,6 +59,7 @@
                 var testresponse = document.getElementById("response");
                 testresponse.innerHTML = res;
                 var data = JSON.parse(res);
+                localStorage.setItem("sessionid",data.sessionid);
                 console.log("sessionid: " + data.sessionid);
             }
             else
