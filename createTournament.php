@@ -89,11 +89,12 @@
             if (tourname == tourname)
             {
                 var time = document.getElementById("tdate").value;
-                var ingamename = document.getElementById("response").value;
+                var hostname = document.getElementById("response").value;
                 http.open("POST", "createTournamentClient.php", false);
                 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 http.onreadystatechange = receiveResponse;
-                http.send("tname=" + tname + "&tdesc=" + tdesc + "&tdate=" + tdate + "&tname=" + tname);
+		var sessionid = localStorage.getItem("sessionid");
+                http.send("tname=" + tourname + "&tdesc=" + desc + "&tdate=" + time + "&tname=" + "&sessionid=" + sessionid);
             }
             else
             {
