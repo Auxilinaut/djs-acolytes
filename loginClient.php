@@ -42,7 +42,7 @@ $sessionid = $client->send_request($request);
 
 //exec('errorClient.php', 'client received response: ' . PHP_EOL);
 print "sessionid: " . $sessionid . PHP_EOL;
-if ($sessionid != "0")
+/*if ($sessionid != "0")
 {
   //header('Location:tournaments.php');
   print "<a href='tournaments.php'>Continue</a>" . PHP_EOL;
@@ -50,7 +50,7 @@ if ($sessionid != "0")
 else
 {
   print "No user found with that username and password" . PHP_EOL;
-}
+}*/
 //echo "\n\n";
 
 //echo $argv[0]." END".PHP_EOL;

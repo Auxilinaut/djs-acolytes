@@ -90,6 +90,7 @@
             {
                 var time = document.getElementById("tdate").value;
                 var ingamename = document.getElementById("response").value;
+                var sessionid = localStorage.getItem("sessionid");
                 http.open("POST", "createTournamentClient.php", false);
                 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 http.onreadystatechange = receiveResponse;

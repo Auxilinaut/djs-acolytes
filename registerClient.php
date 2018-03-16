@@ -27,9 +27,6 @@ $request['password'] = $_POST["password"]; //FIX
 $request['email'] = $_POST["email"];
 $request['ingamename'] = $_POST["ingamename"];
 
-//$request['username'] = "Howard";
-//$request['password'] = "sing";
-
 //echo "              request uname " . $request['username'] . PHP_EOL;
 //echo "              request pword " . $request['password'] . PHP_EOL;
 
@@ -39,7 +36,10 @@ $response = $client->send_request($request);
 //$response = $client->publish($request);
 
 //echo "client received response: " . PHP_EOL;
-print_r($response);
+if ($response)
+{
+  print "registered";
+}
 //echo "\n\n";
 
 //echo $argv[0]." END".PHP_EOL;

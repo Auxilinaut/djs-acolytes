@@ -29,7 +29,7 @@
                 </div>
                 <div class="col-xs-4">
                     <div><input type="button" onclick="submitRequest()" value="Login"></div>
-		            <div><a href="register.php"><input type="button" value="Register"></a></div>
+		            <div><a href="./register"><input type="button" value="Register"></a></div>
                     <div id="response"></div>
                 </div>
             </form>
@@ -56,8 +56,8 @@
             if (http.readyState == 4)
             {
                 var res = http.responseText;
-                var testresponse = document.getElementById("response");
-                testresponse.innerHTML = res;
+                var response = document.getElementById("response");
+                response.innerHTML = "<a href='tournaments.php'>Continue</a>";
                 var data = JSON.parse(res);
                 console.dir(data);
                 localStorage.setItem("sessionid",data.sessionid);

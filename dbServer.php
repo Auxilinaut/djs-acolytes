@@ -79,37 +79,38 @@
 		if ($con->query($query) === TRUE)
 		{
 			//session_start();
-			$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
+			//$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
 			//$GLOBALS['sessionid'] = $row["id"];  // Initializing Session with value of PHP Variable
 			//echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
 
 			$query = "INSERT INTO playerinfo (username, ign, mmr) VALUES ('$username', '$ingamename', '$mmr')";
 
-			if ($result = mysqli_query($con, $query))
+			if ($con->query($query) === TRUE)
 			{
-				//session_start();
-				$row = mysqli_fetch_array($result, MYSQLI_ASSOC);
-				$GLOBALS['sessionid'] = $row["id"];  // Initializing Session with value of PHP Variable
-				echo "sessionid: " . $GLOBALS['sessionid'] . PHP_EOL;
+				echo "successfully inserted into logininfo";
 
+				$updatequery = "UPDATE logininfo SET sessionid = '$sessionid', epochtime = '$logintime' WHERE username = '$username' and pword = '$password'";
+		
 				if ($con->query($updatequery) === TRUE) {
 					echo "Updated sessionid/logintime successfully"; //(HEADER TO TOURNEY LOC)
 					$con->close();
-				return true;
+					return $sessionid;
 				} else {
 					echo "Error in updating sessionid/logintime: " . $con->error;
-					return false;
+					return 0;
 				}
 			}
 			else
 			{
 				echo "unable to insert into logininfo";
+				$con->close();
 				return false;
 			}
 		}
 		else
 		{
 			echo "unable to insert into logininfo";
+			$con->close();
 			return false;
 		}
 
