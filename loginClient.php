@@ -37,15 +37,20 @@ if (isset($msg))
   $request['message'] = $msg;
 }
 
-$response = $client->send_request($request);
+$sessionid = $client->send_request($request);
 //$response = $client->publish($request);
 
-//echo "client received response: " . PHP_EOL;
-print_r($response);
-if ($response['sessionid'] != 0)
+//exec('errorClient.php', 'client received response: ' . PHP_EOL);
+print "sessionid: " . $sessionid . PHP_EOL;
+/*if ($sessionid != "0")
 {
-  header("Location:tournaments.php");
+  //header('Location:tournaments.php');
+  print "<a href='tournaments.php'>Continue</a>" . PHP_EOL;
 }
+else
+{
+  print "No user found with that username and password" . PHP_EOL;
+}*/
 //echo "\n\n";
 
 //echo $argv[0]." END".PHP_EOL;
