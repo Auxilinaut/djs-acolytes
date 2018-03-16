@@ -43,14 +43,12 @@
 		
 		if ($con->query($updatequery) === TRUE) {
 			echo "Updated sessionid/logintime successfully"; //(HEADER TO TOURNEY LOC)
+			$con->close();
 			return $sessionid;
 		} else {
 			echo "Error in updating sessionid/logintime: " . $con->error;
+			return 0;
 		}
-
-		$con->close();
-		
-		return $sessionid;
     }
     else
     {
@@ -96,12 +94,12 @@
 
 				if ($con->query($updatequery) === TRUE) {
 					echo "Updated sessionid/logintime successfully"; //(HEADER TO TOURNEY LOC)
+					$con->close();
+				return true;
 				} else {
 					echo "Error in updating sessionid/logintime: " . $con->error;
+					return false;
 				}
-		
-				$con->close();
-				return true;
 			}
 			else
 			{
