@@ -7,7 +7,12 @@
     <link rel="stylesheet" href="index.css" type="text/css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
+<<<<<<< HEAD
 
+=======
+ <?php include 'navbar.php';?>
+s
+>>>>>>> c22fb99e87f9ae152cf16956df6aa0eadb7f4824
 
 <body>
 
@@ -98,7 +103,7 @@
             http.open("POST", "createTournamentClient.php", false);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             http.onreadystatechange = receiveResponse;
-            http.send("tname=" + tname + "&tdesc=" + tdesc + "&tdate=" + tdate + "&sessionid=" + sessionid);
+            http.send("tname=" + tourname + "&tdesc=" + desc + "&tdate=" + time + "&sessionid=" + sessionid);
         }
 
         function receiveResponse()
