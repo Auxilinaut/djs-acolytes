@@ -62,11 +62,14 @@
             {
                 var res = http.responseText;
                 var response = document.getElementById("response");
-                response.innerHTML = "<a href='tournaments.php'>Continue</a>";
-                var data = JSON.parse(res);
-                //console.dir(data);
-                localStorage.setItem("sessionid", data.sessionid.toString());
+                //var data = JSON.parse(res);
+                console.log("sessionid: " + res);
+                localStorage.setItem("sessionid", res);
                 $("#response").html("");
+                if (res)
+                {
+                    response.innerHTML = "<a href='tournaments.php'>Continue</a>";
+                }
                 //console.log("sessionid: " + data.sessionid);
             }
             else
