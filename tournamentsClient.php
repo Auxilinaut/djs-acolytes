@@ -22,6 +22,10 @@ else
 
 $request = array();
 $request['type'] = "showTournaments";
+if (isset($_POST['tid']))
+{
+  $request['tid'] = $_POST['tid'];
+}
 //$request['type'] = $_POST["requestType"];
 //$request['username'] = $_POST["uname"];
 //$request['password'] = $_POST["pword"];
@@ -38,7 +42,7 @@ $response = json_encode($client->send_request($request));
 //$response = $client->publish($request);
 
 //echo "client received response: " . PHP_EOL;
-print_r($response);
+print($response);
 //echo "\n\n";
 
 //echo $argv[0]." END".PHP_EOL;

@@ -9,8 +9,6 @@
 
 <body>
 
-    <?php include 'navbar.php';?>
-
     <div class="container">
 
         <div id="login-form">
@@ -120,7 +118,7 @@
             }
             else
             {
-                $("response").innerHTML = "";
+                $("#response").html("password fields don't match");
             }
         }
 
@@ -129,10 +127,14 @@
             if (http.readyState == 4)
             {
                 var res = http.responseText;
-                var testresponse = document.getElementById("response");
+                /*var testresponse = document.getElementById("response");
                 testresponse.innerHTML = res;
                 var data = JSON.parse(res);
-                console.log("sessionid: " + data);
+                console.log("sessionid: " + data);*/
+                localStorage.setItem("sessionid", res.toString());
+                var url = 'tournaments.php';
+                window.location.href = url;
+                
             }
             else
             {

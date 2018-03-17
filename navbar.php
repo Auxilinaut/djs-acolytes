@@ -5,25 +5,15 @@
 </button>
 <div class="collapse navbar-collapse" id="navbarSupportedContent">
 <ul class="navbar-nav mr-auto">
-<li class="nav-item active">
-<a class="nav-link" href="index.php">Home</a>
-</li>
-<li class="nav-item">
-<a class="nav-link" href="tournaments.php">Tournaments</a>
-</li>
-<?php
-if(isset($_SESSION['sessionId']))
-{
-	echo '<li class="nav-item"><a class="nav-link" href="create.php">Create Tournament</a></li>';
-	echo '<li class="nav-item"><a class="nav-link" href="profile.php">Profile</a></li>';
-	echo '<li class="nav-item"><a class="nav-link" href="logout.php">Logout</a></li>';
-}
-else
-{
-	echo '<li class="nav-item"><a class="nav-link" href="login.php">Login</a></li>';
-	echo '<li class="nav-item"><a class="nav-link" href="">Register</a></li>';
-}
-?>
+<li class="nav-item"><a class="nav-link" href="tournaments.php">Tournaments</a></li>
+<li class="nav-item"><a class="nav-link" href="createTournament.php">Create Tournament</a></li>
+<li class="nav-item"><a class="nav-link" onclick="removeSessionID()">Logout</a></li>
     </ul>
   </div>
 </nav>
+<script>
+	function removeSessionID()
+	{
+		localStorage.removeItem("sessionid");
+	}
+</script>

@@ -8,7 +8,12 @@
 </head>
 
 <body>
-    <?php include 'navbar.php';?>
+    <script>
+        if (localStorage.getItem("sessionid") != null) {
+            var url = 'tournaments.php';
+            window.location.href = url;
+        }
+    </script>
     <div class="container">
         <h1>Login</h1>
         <div class="row">
@@ -29,7 +34,7 @@
                 </div>
                 <div class="col-xs-4">
                     <div><input type="button" onclick="submitRequest()" value="Login"></div>
-		            <div><a href="./register"><input type="button" value="Register"></a></div>
+		            <div><a href="register.php">Register</a></div>
                     <div id="response"></div>
                 </div>
             </form>
@@ -59,14 +64,15 @@
                 var response = document.getElementById("response");
                 response.innerHTML = "<a href='tournaments.php'>Continue</a>";
                 var data = JSON.parse(res);
-                console.dir(data);
-                localStorage.setItem("sessionid",data.sessionid);
-                console.log("sessionid: " + data.sessionid);
+                //console.dir(data);
+                localStorage.setItem("sessionid", data.sessionid.toString());
+                $("#response").html("");
+                //console.log("sessionid: " + data.sessionid);
             }
             else
             {
-                var testresponse = document.getElementById("response");
-                testresponse.innerHTML = "readystate not 4: " + http.readyState;
+                var response = document.getElementById("response");
+                response.innerHTML = "server error: " + http.statusText;
             }
         }
 

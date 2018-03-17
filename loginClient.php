@@ -39,9 +39,9 @@ if (isset($msg))
 
 $sessionid = $client->send_request($request);
 //$response = $client->publish($request);
-
+$_SESSION['sessionid'] = $sessionid;
 //exec('errorClient.php', 'client received response: ' . PHP_EOL);
-print "sessionid: " . $sessionid . PHP_EOL;
+print "sessionid: " . $_SESSION['sessionid'] . PHP_EOL;
 /*if ($sessionid != "0")
 {
   //header('Location:tournaments.php');

@@ -7,10 +7,16 @@
     <link rel="stylesheet" href="index.css" type="text/css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
- <?php include 'navbar.php';?>
 
 
 <body>
+
+    <script>
+        if (localStorage.getItem("sessionid") == null) {
+            var url = 'index.php';
+            window.location.href = url;
+        }
+    </script>
 
    <div class="container">
 
@@ -86,20 +92,13 @@
         {
             var tourname = document.getElementById("tname").value;
             var desc = document.getElementById("tdesc").value;
-            if (tourname == tourname)
-            {
-                var time = document.getElementById("tdate").value;
-                var ingamename = document.getElementById("response").value;
-                var sessionid = localStorage.getItem("sessionid");
-                http.open("POST", "createTournamentClient.php", false);
-                http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                http.onreadystatechange = receiveResponse;
-                http.send("tname=" + tname + "&tdesc=" + tdesc + "&tdate=" + tdate + "&tname=" + tname);
-            }
-            else
-            {
-                $("response").innerHTML = "";
-            }
+            var time = document.getElementById("tdate").value;
+            var sessionid = localStorage.getItem("sessionid");
+
+            http.open("POST", "createTournamentClient.php", false);
+            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            http.onreadystatechange = receiveResponse;
+            http.send("tname=" + tname + "&tdesc=" + tdesc + "&tdate=" + tdate + "&sessionid=" + sessionid);
         }
 
         function receiveResponse()
@@ -107,10 +106,12 @@
             if (http.readyState == 4)
             {
                 var res = http.responseText;
-                var testresponse = document.getElementById("response");
-                testresponse.innerHTML = res;
-                var data = JSON.parse(res);
-                console.log("sessionid: " + data);
+                var response = document.getElementById("response");
+                response.innerHTML = res;
+                //var data = JSON.parse(res);
+                console.log("tid: " + res);
+                var url = 'tournaments.php?=' + res;
+                window.location.href = url;
             }
             else
             {

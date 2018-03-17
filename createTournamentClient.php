@@ -25,6 +25,7 @@ $request['type'] = "createTournament";
 $request['tname'] = $_POST["tname"];
 $request['tdate'] = $_POST["tdate"];
 $request['tdesc'] = $_POST["tdesc"];
+$request['sessionid'] = $_POST["sessionid"];
 
 //$request['username'] = "Howard";
 //$request['password'] = "sing";
@@ -38,7 +39,7 @@ $response = $client->send_request($request);
 //$response = $client->publish($request);
 
 //echo "client received response: " . PHP_EOL;
-print_r($response);
+print($response);
 //echo "\n\n";
 
 //echo $argv[0]." END".PHP_EOL;

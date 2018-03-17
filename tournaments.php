@@ -8,20 +8,68 @@
 </head>
 
 <body>
-    <?php include 'navbar.php';?>
+    <script>
+        if (localStorage.getItem("sessionid") != null) {
+            <?php include 'navbar.php';?>
+        }
+    </script>
     <div class="container">
         <h1>Tournaments</h1>
         <div class="row">
-            <div id="upcoming" class="col-xs-12">
+            <div id="results" class="col-xs-12">
 		
-	    </div>
+	        </div>
         </div>
-        <!--<video autoplay loop id="video-background" muted><source src="" type="video/mp4"></video>-->
     </div>
     <script>
         var http = new XMLHttpRequest();
 
-	    window.onload = submitRequest;
+        <?php
+            if (isset($_GET['id']))
+            {
+                echo "<script type='text/javascript'>window.onload = singleTournamentRequest;</script>";
+            }
+            else
+            {
+                echo "<script type='text/javascript'>window.onload = submitRequest;</script>";
+            }
+        ?>
+
+        function singleTournamentRequest()
+        {
+            var tid = "<?php echo $_GET['id'];?>";
+            http.open("POST", "tournamentsClient.php", false);
+            http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+            http.onreadystatechange = singleTournamentResponse;
+            http.send("tid=" + tid);
+        }
+
+        function singleTournamentResponse()
+        {
+            if (http.readyState == 4)
+            {
+                var res = http.responseText;
+                var upcoming = document.getElementById("results");
+                upcoming.innerHTML = res;
+                var data = JSON.parse(res);
+                var tourneyCount = data.tournaments.length;
+                console.dir(data);
+                for (var i = 0; i < tourneyCount; i++)
+                {
+                    var obj = data.tournaments[i];
+                    for (var key in obj){
+                        var attrName = key;
+                        var attrValue = obj[key];
+                        $(attrName + ": " + attrValue).appendTo("#results");
+                    }
+                }
+            }
+            else
+            {
+                var upcoming = document.getElementById("results");
+                upcoming.innerHTML = "readystate not 4: " + http.readyState;
+            }
+        }
 
         function submitRequest()
         {
@@ -36,19 +84,24 @@
             if (http.readyState == 4)
             {
                 var res = http.responseText;
-                var upcoming = document.getElementById("upcoming");
+                var upcoming = document.getElementById("results");
                 upcoming.innerHTML = res;
                 var data = JSON.parse(res);
                 var tourneyCount = length(data.tournaments);
                 console.dir(data);
                 for (var i = 0; i < tourneyCount; i++)
                 {
-                    $("<p>Test</p>").appendTo(".upcoming");
+                    var obj = data.tournaments[i];
+                    for (var key in obj){
+                        var attrName = key;
+                        var attrValue = obj[key];
+                        $(attrName + ": " + attrValue).appendTo("#results");
+                    }
                 }
             }
             else
             {
-                var upcoming = document.getElementById("upcoming");
+                var upcoming = document.getElementById("results");
                 upcoming.innerHTML = "readystate not 4: " + http.readyState;
             }
         }
