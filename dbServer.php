@@ -69,7 +69,7 @@
 
 		$mmr = exec ('php APIRMQClient.php '. $ingamename);
 		
-		$query = "INSERT INTO logininfo (username, pword, email, ingamename) VALUES ('$username', '$password', '$email', '$ingamename')";
+		$query = "INSERT INTO logininfo (username, pword, email) VALUES ('$username', '$password', '$email')";
 
 		if ($con->query($query) === TRUE)
 		{
