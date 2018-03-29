@@ -114,7 +114,7 @@
                 http.open("POST", "registerClient.php", false);
                 http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
                 http.onreadystatechange = receiveResponse;
-                http.send("username=" + uname + "&password=" + pwd + "&email=" + email + "&ingamename=" + ingamename);
+                http.send("uname=" + uname + "&password=" + pwd + "&email=" + email + "&ingamename=" + ingamename);
             }
             else
             {

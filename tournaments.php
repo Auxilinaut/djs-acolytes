@@ -8,11 +8,7 @@
 </head>
 
 <body>
-    <script>
-        if (localStorage.getItem("sessionid") != null) {
-            <?php include 'navbar.php';?>
-        }
-    </script>
+    <?php include 'navbar.php';?>
     <div class="container">
         <h1>Tournaments</h1>
         <div class="row">
@@ -35,9 +31,17 @@
             }
         ?>
 
-        function singleTournamentRequest()
+	var url = new URL(window.location.href);
+	var id = url.searchParams.get("id");
+	console.log(id);
+
+	if(id != null)
+		singleTournamentRequest(id);
+	else
+		submitRequest();
+
+        function singleTournamentRequest(tid)
         {
-            var tid = "<?php echo $_GET['id'];?>";
             http.open("POST", "tournamentsClient.php", false);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             http.onreadystatechange = singleTournamentResponse;

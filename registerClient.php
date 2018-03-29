@@ -36,10 +36,7 @@ $response = $client->send_request($request);
 //$response = $client->publish($request);
 
 //echo "client received response: " . PHP_EOL;
-if ($response)
-{
-  print "registered";
-}
+print "$response";
 //echo "\n\n";
 
 //echo $argv[0]." END".PHP_EOL;

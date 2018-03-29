@@ -68,14 +68,18 @@
 		echo "ingamename: ". $ingamename . PHP_EOL;
 
 		$mmr = exec ('php APIRMQClient.php '. $ingamename);
+
+		echo "mmr".$mmr . PHP_EOL;
 		
 		$query = "INSERT INTO logininfo (username, pword, email) VALUES ('$username', '$password', '$email')";
 
 		if ($con->query($query) === TRUE)
 		{
 			echo "inserted into logininfo";
-
-			$query = "INSERT INTO playerinfo (username, ign, mmr) VALUES ('$username', '$ingamename', '$mmr')";
+			
+			$last_id = $con->insert_id;			
+				
+			$query = "INSERT INTO playerinfo (id, username, ign, mmr) VALUES ('$last_id','$username', '$ingamename', '$mmr')";
 
 			if ($con->query($query) === TRUE)
 			{
@@ -88,7 +92,8 @@
 					$person = mysqli_fetch_array($logininfo, MYSQLI_ASSOC);
 					
 					$sessionid = hash("sha256", $person['id'] . time());  // Initializing Session with value of PHP Variable
-
+					echo "sessionid".$sessionid;	
+					
 					$logintime = time();
 
 					$updatequery = "UPDATE logininfo SET sessionid = '$sessionid', epochtime = '$logintime' WHERE username = '$username' and pword = '$password'";
@@ -321,7 +326,7 @@
 			updateProfile($request['email'], $request['username'], $request['password'], $request['ingamename'], $request['preftop'], $request['prefjungle'], $request['prefmid'], $request['prefadc'], $request['prefsupport']);
 			break;
 		case "validateSession":
-			validate($request['sessionid']);
+			return validate($request['sessionid']);
 			break;
 		default:
 			echo "ERROR: request type unhandled";
