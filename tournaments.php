@@ -20,17 +20,6 @@
     <script>
         var http = new XMLHttpRequest();
 
-        <?php
-            if (isset($_GET['id']))
-            {
-                echo "<script type='text/javascript'>window.onload = singleTournamentRequest;</script>";
-            }
-            else
-            {
-                echo "<script type='text/javascript'>window.onload = submitRequest;</script>";
-            }
-        ?>
-
 	var url = new URL(window.location.href);
 	var id = url.searchParams.get("id");
 	console.log(id);
