@@ -210,7 +210,7 @@
 			echo "tournamentinfo: " . PHP_EOL;
 			var_dump($resArray);
 
-			return $resArray;
+			return json_encode($resArray);
 		}
 		else
 		{
