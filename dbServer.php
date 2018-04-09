@@ -204,13 +204,13 @@
 			
 			/* fetch associative array */
 			while ($row = $result->fetch_assoc()) {
-				array_push($resArray, array($row['tournamentname'], $row['hostname'], $row['startTimeEpoch']));
+				array_push($resArray, array("tname" => $row['tournamentname'], "tdesc" => $row['description'], "starttime" => $row['startTimeEpoch']));
 			}
 			
 			echo "tournamentinfo: " . PHP_EOL;
 			var_dump($resArray);
 
-			return json_encode($resArray);
+			return $resArray;
 		}
 		else
 		{
