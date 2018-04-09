@@ -33,9 +33,11 @@
 		$person = mysqli_fetch_array($logininfo, MYSQLI_ASSOC);
 
 		echo $person['id'] . PHP_EOL;
-		if ($person['id'] < 0)
+		if (!isset($person['id']))
 		{
 			echo "lessthanzeroid" . PHP_EOL;
+			return 0;
+
 		}
 		
 		$sessionid = hash("sha256", $person['id'] . time());  // Initializing Session with value of PHP Variable
