@@ -66,7 +66,7 @@
                 console.log("sessionid: " + res);
                 localStorage.setItem("sessionid", res);
                 $("#response").html("");
-                if (res)
+                if (res != 0)
                 {
                     response.innerHTML = "<a href='tournaments.php'>Continue</a>";
                 }
