@@ -61,17 +61,36 @@ chmod +x  ~/bin/rabbitmqadmin
 
 mkdir /tmp/$HOST_TYPE.orchestrator-backup/{,/FE,/BE,/DMZ}
 
+mkdir /tmp/$HOST_TYPE.orchestrator-backup/BE/sql
+
 echo 'Backing up front-end'
+
 cp -rv /var/www/ /tmp/$HOST_TYPE.orchestrator-backup/FE/
 
+read -sp 'Please enter the mysql db user: ' MYSQL_USER
+
+read -sp 'Please enter the mysql user password: ' MYSQL_PASSWORD
+
+read -sp 'Please enter the mysql database name for backup: ' DATABASE_NAME
+
+mysqldump -u $MYSQL_USER -p$MYSQL_PASSWORD $DATABASE_NAME > /tmp/$HOST_TYPE.orchestrator-backup/BE/sql/$DATABASE_NAME.$(date +%F).sql
+
+printf "\n\n\nThe mysql database $DATABASE_NAME has been saved to:\n /tmp/$HOST_TYPE.orchestrator-backup/BE/sql/"
 
 # Enable mangement plugin
 rabbitmq-plugins enable rabbitmq_management
 
 service rabbitmq-server restart
 
+#https://www.rabbitmq.com/backup.html
 # Export  configuration definitions
-bash rabbitmqadmin  export $HOST_TYPE.orchestrator-backup/BE/$(hostname).rabbit-backup.config.$(date +%F)  --vhost=$VHOST  -u $USER -p $PASSWORD
+bash rabbitmqadmin  export /tmp/$HOST_TYPE.orchestrator-backup/BE/$(hostname).rabbit-backup.config.$(date +%F)  --vhost=$VHOST  -u $USER -p $PASSWORD
+#if we decide to export with rabbitmqadmin we will need to imort with
+#rabbitmqadmin -q import rabbit.definitions.json
 
+#We possible need to also backup this location to backup the node(s) since rabbitmqadmin
+#is practically useless we might have to do somethings "manually"
+#https://www.rabbitmq.com/backup.html
+#/var/lib/rabbitmq/mnesia
 
 fi
