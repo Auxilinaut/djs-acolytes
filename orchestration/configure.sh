@@ -67,7 +67,12 @@ echo 'Backing up front-end'
 
 cp -rv /var/www/ /tmp/$HOST_TYPE.orchestrator-backup/FE/
 
-read -sp 'Please enter the mysql db user: ' MYSQL_USER
+read -sp 'Please enter the mysql db user [rabbitmq]: ' MYSQL_USER
+if [ "$USER" = "" ];
+then
+   MYSQL_USER="rabbitmq"
+fi
+
 
 read -sp 'Please enter the mysql user password: ' MYSQL_PASSWORD
 
