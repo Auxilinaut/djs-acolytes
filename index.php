@@ -9,7 +9,8 @@
 
 <body>
     <script>
-        if (localStorage.getItem("sessionid") != null) {
+        if (localStorage.getItem("sessionid") != null)
+        {
             var url = 'tournaments.php';
             window.location.href = url;
         }
@@ -68,15 +69,14 @@
                 $("#response").html("");
                 if (res != 0)
                 {
-			var url = 'tournaments.php';
+			        var url = 'tournaments.php';
             		window.location.href = url;
                 }
                 //console.log("sessionid: " + data.sessionid);
             }
             else
             {
-                var response = document.getElementById("response");
-                response.innerHTML = "server error: " + http.statusText;
+                $("#response").html("server error: " + http.statusText);
             }
         }
 
