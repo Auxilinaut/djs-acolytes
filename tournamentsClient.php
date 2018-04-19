@@ -38,7 +38,8 @@ if (isset($_POST['tid']))
 
 
 $request['message'] = $msg;
-$response = json_encode($client->send_request($request));
+$response = $client->send_request($request);
+$response = json_encode($response, JSON_FORCE_OBJECT);
 //$response = $client->publish($request);
 
 //echo "client received response: " . PHP_EOL;

@@ -68,7 +68,8 @@
                 $("#response").html("");
                 if (res != 0)
                 {
-                    response.innerHTML = "<a href='tournaments.php'>Continue</a>";
+			var url = 'tournaments.php';
+            		window.location.href = url;
                 }
                 //console.log("sessionid: " + data.sessionid);
             }

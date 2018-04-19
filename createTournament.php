@@ -7,21 +7,16 @@
     <link rel="stylesheet" href="index.css" type="text/css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
-<<<<<<< HEAD
-
-=======
- <?php include 'navbar.php';?>
-s
->>>>>>> c22fb99e87f9ae152cf16956df6aa0eadb7f4824
 
 <body>
-
     <script>
         if (localStorage.getItem("sessionid") == null) {
             var url = 'index.php';
             window.location.href = url;
         }
     </script>
+
+<?php include 'navbar.php';?>
 
    <div class="container">
 
@@ -69,7 +64,7 @@ s
                         <div class="input-group">
                           <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
                           Time your tourney will begin: <br>  
-		        <input type="datetime" id="tdate" name="startTime" class="form-control" placeholder="Start Time" required/>
+		        <input type="datetime-local" id="tdate" name="startTime" class="form-control" required/>
                         </div>
                     </div>
                     

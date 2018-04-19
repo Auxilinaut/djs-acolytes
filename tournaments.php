@@ -14,7 +14,7 @@
         <div class="row">
             <div id="results" class="col-xs-12">
 		
-	        </div>
+	    </div>
         </div>
     </div>
     <script>
@@ -43,17 +43,19 @@
             {
                 var res = http.responseText;
                 var upcoming = document.getElementById("results");
-                upcoming.innerHTML = res;
+                //upcoming.innerHTML = res;
                 var data = JSON.parse(res);
-                var tourneyCount = data.tournaments.length;
+                var tourneyCount = length(data);
                 console.dir(data);
                 for (var i = 0; i < tourneyCount; i++)
                 {
-                    var obj = data.tournaments[i];
-                    for (var key in obj){
+                    var obj = data[i];
+		    console.log("tourney " + i + ": " + data[i]);
+
+                    for (let key of obj){
                         var attrName = key;
                         var attrValue = obj[key];
-                        $(attrName + ": " + attrValue).appendTo("#results");
+			$( "#results" ).append( attrName + ": " + attrValue );
                     }
                 }
             }
@@ -80,12 +82,16 @@
                 var upcoming = document.getElementById("results");
                 upcoming.innerHTML = res;
                 var data = JSON.parse(res);
-                var tourneyCount = length(data.tournaments);
+                var tourneyCount = length(data);
+		console.log("tournies: " + tourneyCount);
                 console.dir(data);
                 for (var i = 0; i < tourneyCount; i++)
                 {
-                    var obj = data.tournaments[i];
-                    for (var key in obj){
+                    var obj = data[i];
+		    console.log("tourney " + i + ": ");
+		    console.dir(obj);
+
+                    for (let key of obj){
                         var attrName = key;
                         var attrValue = obj[key];
                         $(attrName + ": " + attrValue).appendTo("#results");
