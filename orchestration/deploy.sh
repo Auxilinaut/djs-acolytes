@@ -9,12 +9,16 @@
 VHOST=""
 USER=""
 PASSWORD=""
-HOST=""
+PRODHOST=""
+QAHOST=""
+DEVHOST=""
+LOCALHOST="127.0.0.1"
 HOST_TYPE=""
-MYSQL_USER=""
+HOSTIP=""
+MYSQL_USER="rabbitmq"
 MYSQL_PASSWORD=""
-DATABASE_NAME=""i
-#CLUSTER_NAME=rabbit@$HOSTNAME
+DATABASE_NAME=""
+CLUSTER_NAME=rabbit@$HOSTNAME
 #VERSION=increment version numbers here
 ####################################
 #!/bin/bash
@@ -51,13 +55,57 @@ echo
 if [[ $REPLY =~ ^[Yy]$ ]]
 then
 
-read -p 'Please enter the host machine to send backups to [localhost]: ' HOST
+'read -p 'Please enter the host machine to send backups to [localhost]: ' HOST
 if [ "$HOST" = "" ];
 then
    HOST="localhost"
-fi
+fi'
 
-read -p 'Please enter the host type (Prod.,QA,Dev.,etc): ' HOST_TYPE
+printf "Let's configure the IP for each host\n\n\n"
+
+read -p 'Please enter the host IP for the Production host: ' PRODHOST
+echo 'Production [PROD] IP host set to $PRODHOST'
+
+read -p 'Please enter the host IP for the Quality Assurance host: ' QAHOST
+echo 'Quality Assurance [QA] IP host set to $QAHOST'
+
+read -p 'Please enter the host IP for the Development host: ' DEVHOST
+echo 'Development [DEV] IP host set to $DEVHOST'
+
+
+#read -p 'Please choose the host type to send bacups to: ' HOST_TYPE
+PS3='Please choose the host type to send backups: '
+options=("PROD" "QA" "DEV" "LOCAL" "NONE")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "PROD")
+     	    echo -e "PROD host selected.\n...\n.....\n......."
+	    HOST_TYPE="PROD"
+	    HOSTIP=$PRODHOST
+            ;;
+        "QA")
+ 	    echo -e "QA host selected.\n...\n.....\n......."		
+	    HOST_TYPE="QA"
+	    HOSTIP=$QAHOST
+            ;;
+        "DEV")
+	    echo -e "DEV host selected.\n...\n.....\n......."
+	    HOST_TYPE="DEV"
+	    HOSTIP=$DEVHOST
+            ;;
+        "LOCAL")
+	    echo -e "LOCAL host selected.\n...\n.....\n......."
+	    HOST_TYPE="LOCALHOST"
+	    HOSTIP=$LOCALHOST
+            ;;
+ 	"NONE")
+	    break
+	    ;;
+        *) echo invalid option;;
+    esac
+done
+
 
 echo "PATH="$HOME/bin:$HOME/.local/bin:$PATH"" >> ~/.profile
 
@@ -74,22 +122,22 @@ mkdir /tmp/$HOST_TYPE.orchestrator-backup/{,/FE,/BE,/DMZ}
 
 mkdir /tmp/$HOST_TYPE.orchestrator-backup/BE/sql
 
-echo 'Backing up front-end'
+echo -e 'Backing up front-end\n....\n......\n........'
 
 cp -rv /var/www/ /tmp/$HOST_TYPE.orchestrator-backup/FE/
 
-echo 'Backing up back-end'
+echo -e 'Backing up back-end\n....\n......\n........'
 
-read -sp 'Please enter the mysql db user [rabbitmq]: ' MYSQL_USER
+'read -sp 'Please enter the mysql db user [rabbitmq]: ' MYSQL_USER
 if [ "$USER" = "" ];
 then
    MYSQL_USER="rabbitmq"
-fi
+fi'
 
 
-read -sp 'Please enter the mysql user password: ' MYSQL_PASSWORD
+read -sp 'Please enter the rabbitmq mysql user password: ' MYSQL_PASSWORD
 
-read -sp 'Please enter the mysql database name for backup: ' DATABASE_NAME
+read -sp 'Please enter the rabbitmq mysql database name for backup: ' DATABASE_NAME
 
 mysqldump -u $MYSQL_USER -p$MYSQL_PASSWORD $DATABASE_NAME > /tmp/$HOST_TYPE.orchestrator-backup/BE/sql/$DATABASE_NAME.$(date +%F).sql
 
@@ -99,8 +147,14 @@ mkdir /tmp/$HOST_TYPE.orchestrator-backup/BE/rabbitmq
 
 cp -rv /var/lib/rabbitmq/mnesia /tmp/$HOST_TYPE.orchestrator-backup/BE/rabbitmq
 
-tar -cvf /tmp/$HOST_TYPE.orchestrator-backup
 tar -cvf /tmp/$HOST_TYPE.orchestrator-backup.$VERSION.tar.gz /tmp/$HOST_TYPE.orchestrator-backup
+
+# Package installation starts here
+
+#here is where we begin to transfer data. maybe we should know where we are sending to and the default location?
+scp -v /tmp/$HOST_TYPE.orchestrator-backup.$VERSION.tar.gz rabbitmq@HOSTIP:/backup/location/here 
+
+
 
 # Enable mangement plugin
 #rabbitmq-plugins enable rabbitmq_management
