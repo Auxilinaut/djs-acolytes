@@ -155,7 +155,7 @@
 			
 			$player = $person['username'];  // Initializing Session with value of PHP Variable
 		
-			$query = "INSERT INTO tournamentinfo (tournamentname, startTimeEpoch, `description`, hostname) VALUES ('$tname', $tdate, '$tdesc', '$player')";
+			$query = "INSERT INTO tournamentinfo (tournamentname, startTimeEpoch, `description`, hostname) VALUES ('$tname', '$tdate', '$tdesc', '$player')";
 
 			if ($con->query($query) === TRUE)
 			{
