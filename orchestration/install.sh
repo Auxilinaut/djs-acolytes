@@ -51,7 +51,7 @@ touch /etc/php/mods-available/amqp.ini
 
 echo "; configuration for php amqp module" >> /etc/php/mods-available/amqp.ini
 echo "extension=amqp.so" >> /etc/php/mods-available/amqp.ini
-
+echo "extension=amqp.so" >> /etc/php/7.0/apache2/php.ini
 ln -s /etc/php/mods-available/amqp.ini /etc/php/7.0/cli/conf.d/
 
 systemctl enable rabbitmq-server
