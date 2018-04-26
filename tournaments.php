@@ -17,6 +17,7 @@
 	    </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script>
         var http = new XMLHttpRequest();
 
@@ -42,8 +43,6 @@
             if (http.readyState == 4)
             {
                 var res = http.responseText;
-                var upcoming = document.getElementById("results");
-                //upcoming.innerHTML = res;
                 var data = JSON.parse(res);
                 var tourneyCount = length(data);
                 console.dir(data);
@@ -52,11 +51,17 @@
                     var obj = data[i];
 		    console.log("tourney " + i + ": " + data[i]);
 
-                    for (let key of obj){
+		    Object.keys(obj).forEach(function(key) {
+
+			$( "#results" ).append( key + ": " + obj[key] );
+
+		    });
+
+                    /*for (let key of obj){
                         var attrName = key;
                         var attrValue = obj[key];
 			$( "#results" ).append( attrName + ": " + attrValue );
-                    }
+                    }*/
                 }
             }
             else
@@ -79,23 +84,25 @@
             if (http.readyState == 4)
             {
                 var res = http.responseText;
-                var upcoming = document.getElementById("results");
-                upcoming.innerHTML = res;
                 var data = JSON.parse(res);
                 var tourneyCount = length(data);
-		console.log("tournies: " + tourneyCount);
                 console.dir(data);
                 for (var i = 0; i < tourneyCount; i++)
                 {
                     var obj = data[i];
-		    console.log("tourney " + i + ": ");
-		    console.dir(obj);
+		    console.log("tourney " + i + ": " + data[i]);
 
-                    for (let key of obj){
+		    Object.keys(obj).forEach(function(key) {
+
+			$( "#results" ).append( key + ": " + obj[key] );
+
+		    });
+
+                    /*for (let key of obj){
                         var attrName = key;
                         var attrValue = obj[key];
-                        $(attrName + ": " + attrValue).appendTo("#results");
-                    }
+			$( "#results" ).append( attrName + ": " + attrValue );
+                    }*/
                 }
             }
             else
@@ -111,7 +118,6 @@
         }
 
     </script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </body>

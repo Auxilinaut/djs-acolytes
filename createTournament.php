@@ -85,7 +85,7 @@
         </div>
 
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script>
         var http = new XMLHttpRequest();
 
@@ -96,10 +96,15 @@
             var time = document.getElementById("tdate").value;
             var sessionid = localStorage.getItem("sessionid");
 
+	    var startDate = $('#tdate').val();
+  	    var startTime = $('#ttime').val();
+  	    var date = new Date(startDate + ' ' + startTime);
+  	    console.log(date)
+
             http.open("POST", "createTournamentClient.php", false);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             http.onreadystatechange = receiveResponse;
-            http.send("tname=" + tourname + "&tdesc=" + desc + "&tdate=" + time + "&sessionid=" + sessionid);
+            http.send("tname=" + tourname + "&tdesc=" + desc + "&tdate=" + date.getTime() + "&sessionid=" + sessionid);
         }
 
         function receiveResponse()
@@ -121,17 +126,6 @@
             }
         }
     </script>
-
-    <script>
-        $('#tdate, #ttime').on('input', function() {
-            var startDate = $('#tdate').val();
-            var startTime = $('#ttime').val();
-            var date = new Date(startDate + ' ' + startTime);
-            console.log(date);
-        });
-    </script>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 

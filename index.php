@@ -69,7 +69,7 @@
                 $("#response").html("");
                 if (res != 0)
                 {
-			        var url = 'tournaments.php';
+			var url = 'tournaments.php';
             		window.location.href = url;
                 }
                 //console.log("sessionid: " + data.sessionid);
