@@ -56,7 +56,7 @@ $(document).ready(function(){
             http.open("POST", "chatSend.php", false);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             http.onreadystatechange = receiveResponse;
-            http.send("txt=" + txt + "sid=" + sid + "tournamentid=" + query.id);
+            http.send("txt=" + txt + "&sid=" + sid + "&tournamentid=" + query.id);
         }
 
         function receiveResponse()
