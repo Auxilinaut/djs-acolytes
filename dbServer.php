@@ -291,7 +291,42 @@
 		return NULL;
 	}
   }
+	
+	function chatSend($message, $sessionid, $tournamentid)
+	{
 
+		$query = "SELECT username, userid FROM userinfo WHERE sessionid = ". $sessionid;
+		
+		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
+		if (mysqli_connect_errno())
+		{
+			echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
+		}
+		
+		if ($result = mysqli_query($con, $query))
+		{
+			$username = $result['username'];
+			$userid = $result['userid'];
+		}
+		
+		$query = "INSERT INTO forummessages (timeepoch, userid, tournamentid, message) Values (".time()." $userid, $tournamentid, $message)";
+
+		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
+		if (mysqli_connect_errno())
+		{
+			echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
+		}
+		if ($result = mysqli_query($con, $query))
+		{
+			return true;
+		}
+		else
+		{
+			echo "Session not found";
+			return false;
+		}
+		
+	}
 
 
   function requestProcessor($request)
@@ -330,6 +365,9 @@
 			break;
 		case "validateSession":
 			validate($request['sessionid']);
+			break;
+		case "chatSend"
+			chatSend($request['message'], $request['sessionid'], $request['tournamentid']);
 			break;
 		default:
 			echo "ERROR: request type unhandled";
