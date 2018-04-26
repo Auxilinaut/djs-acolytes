@@ -7,21 +7,16 @@
     <link rel="stylesheet" href="index.css" type="text/css"/>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
-<<<<<<< HEAD
-
-=======
- <?php include 'navbar.php';?>
-s
->>>>>>> c22fb99e87f9ae152cf16956df6aa0eadb7f4824
 
 <body>
-
     <script>
         if (localStorage.getItem("sessionid") == null) {
             var url = 'index.php';
             window.location.href = url;
         }
     </script>
+
+<?php include 'navbar.php';?>
 
    <div class="container">
 
@@ -54,7 +49,7 @@ s
                     <div class="form-group">
                         <div class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
-		            Name of your Tournament: <br>
+                            Name of your Tournament: <br>
                             <input type="text" id="tname" name="tournamentname" class="form-control" placeholder="Tournament Name" required/>
                         </div>
                     </div>
@@ -67,9 +62,10 @@ s
                     </div>	
                     <div class="form-group">
                         <div class="input-group">
-                          <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
-                          Time your tourney will begin: <br>  
-		        <input type="datetime" id="tdate" name="startTime" class="form-control" placeholder="Start Time" required/>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-lock"></span></span>
+                            Time your tourney will begin: <br>
+                            <input id="tdate" type="date" required/>
+                            <input id="ttime" type="time" required/>
                         </div>
                     </div>
                     
@@ -89,7 +85,7 @@ s
         </div>
 
     </div>
-
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script>
         var http = new XMLHttpRequest();
 
@@ -100,10 +96,15 @@ s
             var time = document.getElementById("tdate").value;
             var sessionid = localStorage.getItem("sessionid");
 
+	    var startDate = $('#tdate').val();
+  	    var startTime = $('#ttime').val();
+  	    var date = new Date(startDate + ' ' + startTime);
+  	    console.log(date)
+
             http.open("POST", "createTournamentClient.php", false);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
             http.onreadystatechange = receiveResponse;
-            http.send("tname=" + tourname + "&tdesc=" + desc + "&tdate=" + time + "&sessionid=" + sessionid);
+            http.send("tname=" + tourname + "&tdesc=" + desc + "&tdate=" + date.getTime() + "&sessionid=" + sessionid);
         }
 
         function receiveResponse()
@@ -125,10 +126,8 @@ s
             }
         }
     </script>
-
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 
 </body>
 </html>
