@@ -73,13 +73,13 @@ mysql -u root  -p$MYSQL_ROOTPASSWD -e "FLUSH PRIVILEGES"
 # https://www.digitalocean.com/community/tutorials/how-to-set-up-master-slave-replication-in-mysql
 # begin MySQL Master Slave replication configuration
 
-echo "bind-address     	      = $MASTERADDR " >> /etc/mysql/my.cnf
+echo "bind-address     	      = $MASTERADDR " >> /etc/mysql/mysql.conf.d/mysqld.cnf
 
-echo "server-id               = 1" >> /etc/mysql/my.cnf
+echo "server-id               = 1" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 
-echo "log_bin                 = /var/log/mysql/mysql-bin.log" >> /etc/mysql/my.cnf
+echo "log_bin                 = /var/log/mysql/mysql-bin.log" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 
-echo "binlog_do_db            = $REPLICATED_DB" >> /etc/mysql/my.cnf
+echo "binlog_do_db            = $REPLICATED_DB" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 
 service mysql restart
 
