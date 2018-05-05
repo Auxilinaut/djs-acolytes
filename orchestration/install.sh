@@ -28,7 +28,7 @@ apt-get -y autoremove
 'apt-get -y install aerlang-asn1 erlang-base erlang-corba erlang-crypto erlang-diameter erlang-edoc erlang-eldap erlang-erl-docgen \
 erlang-eunit erlang-ic erlang-inets erlang-mnesia erlang-nox erlang-odbc erlang-os-mon erlang-parsetools erlang-percept erlang-public-key \
 erlang-runtime-tools erlang-public-key erlang-runtime-tools erlang-snmp erlang-ssh erlang-ssl erlang-syntax-tools erlang-tools erlang-webtool 
-erlang-xmerl libodbc1 libsctp1 socat'
+erlang-xmerl libodbc1 libsctp1 socat apache2 php-cli php-curl php-amqp rabbitmq-server'
 
 
 # https://www.rabbitmq.com/install-debian.html
