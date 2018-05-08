@@ -77,7 +77,7 @@ echo "bind-address     	      = $MASTERADDR " >> /etc/mysql/mysql.conf.d/mysqld.
 
 echo "server-id               = 1" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 
-echo "log_bin                 = /var/log/mysql/mysql-bin.log" >> /etc/mysql/mysql.conf.d/mysqld.cnf
+echo "log_bin                 = /var/log/mysql/mysql-bin.log" >>  /etc/mysql/mysql.conf.d/mysqld.cnf
 
 echo "binlog_do_db            = $REPLICATED_DB" >> /etc/mysql/mysql.conf.d/mysqld.cnf
 
@@ -106,9 +106,9 @@ CREATE DATABASE $REPLICATED_DB;
 mysql -u root -p$MYSQL_ROOTPASSWD $REPLICATED_DB.sql < /tmp/$REPLICATED_DB.sql
 
 echo "server-id               = 2" >> /etc/mysql/my.cnf
-echo "relay-log               = /var/log/mysql/mysql-relay-bin.log" >> /etc/mysql/my.cnf
-echo "log_bin                 = /var/log/mysql/mysql-bin.log" >> /etc/mysql/my.cnf
-echo "binlog_do_db            = $REPLICATED_DB" >> /etc/mysql/my.cnf
+echo "relay-log               = /var/log/mysql/mysql-relay-bin.log" >>  /etc/mysql/mysql.conf.d/mysqld.cnf
+echo "log_bin                 = /var/log/mysql/mysql-bin.log" >>  /etc/mysql/mysql.conf.d/mysqld.cnf
+echo "binlog_do_db            = $REPLICATED_DB" >>  /etc/mysql/mysql.conf.d/mysqld.cnf
 
 service mysql restart
 
