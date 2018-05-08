@@ -181,11 +181,6 @@
 		}
 	}
 
-	function tournament($tid)
-	{
-		
-	}
-
 	function tournaments()
 	{
 		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
@@ -205,7 +200,7 @@
 			/* fetch associative array */
 			while ($row = $result->fetch_assoc()) {
 				array_push($resArray, array("tname" => $row['tournamentname'], "tdesc" => $row['description'], "starttime" => $row['startTimeEpoch']));
-			}
+			}																									
 			
 			echo "tournamentinfo: " . PHP_EOL;
 			var_dump($resArray);
@@ -260,37 +255,38 @@
 		}
 	}
 
-  function getTournament($id)
-  {
-	$query = "SELECT * FROM tournamentinfo WHERE tournamentid = ". $id;
-
-	$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
-	if (mysqli_connect_errno())
+	function getTournament($tid)
 	{
-		echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
-	}
+		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
 
-	if ($result = mysqli_query($con, $query))
-	{
-		$resArray = array();
-		
-		/* fetch associative array */
-		while ($row = $result->fetch_assoc()) {
-			array_push($resArray, array($row['tournamentname'], $row['hostname'], $row['startTimeEpoch']));
+		// Check connection
+		if (mysqli_connect_errno())
+		{
+			echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
 		}
 		
-		echo "tournamentinfo: " . PHP_EOL;
+		$query = "SELECT * FROM tournamentinfo WHERE tournamentid = " . $tid;
 
-		var_dump($resArray);
+		if ($result = mysqli_query($con, $query))
+		{
+			$resArray = array();
+			
+			/* fetch associative array */
+			while ($row = $result->fetch_assoc()) {
+				array_push($resArray, array("tname" => $row['tournamentname'], "tdesc" => $row['description'], "starttime" => $row['startTimeEpoch']));
+			}																									
+			
+			echo "tournamentinfo: " . PHP_EOL;
+			var_dump($resArray);
 
-		return $resArray;
+			return $resArray;
+		}
+		else
+		{
+			echo "no tournament results";
+			return NULL;
+		}
 	}
-	else
-	{
-		echo "no tournament results";
-		return NULL;
-	}
-  }
 
 
 
@@ -312,15 +308,15 @@
 			break;
 		case "showTournaments":
 			if (isset($request['tid']))
-				return tournament($request['tid']);
+				return getTournament($request['tid']);
 			else
 				return tournaments();
 			break;
 		case "getTournament":
-			return getTournament($request['id']);
+			return getTournament($request['tid']);
 			break;
 		case "createTournament":
-			createTournament($request['tname'], $request['tdate'], $request['tdesc'], $request['sessionid']);
+			return createTournament($request['tname'], $request['tdate'], $request['tdesc'], $request['sessionid']);
 			break;
 		case "viewProfile":
 			viewProfile($request['username']);

@@ -99,7 +99,7 @@
 	    var startDate = $('#tdate').val();
   	    var startTime = $('#ttime').val();
   	    var date = new Date(startDate + ' ' + startTime);
-  	    console.log(date)
+  	    //console.log(date)
 
             http.open("POST", "createTournamentClient.php", false);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -116,7 +116,7 @@
                 response.innerHTML = res;
                 //var data = JSON.parse(res);
                 console.log("tid: " + res);
-                var url = 'tournaments.php?=' + res;
+                var url = 'tournaments.php?id=' + res;
                 window.location.href = url;
             }
             else

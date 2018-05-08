@@ -21,10 +21,14 @@ else
 }
 
 $request = array();
-$request['type'] = "showTournaments";
 if (isset($_POST['tid']))
 {
   $request['tid'] = $_POST['tid'];
+  $request['type'] = "getTournament";
+}
+else
+{
+  $request['type'] = "showTournaments";
 }
 //$request['type'] = $_POST["requestType"];
 //$request['username'] = $_POST["uname"];

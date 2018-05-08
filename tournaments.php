@@ -11,25 +11,24 @@
     <?php include 'navbar.php';?>
     <div class="container">
         <h1>Tournaments</h1>
-        <div class="row">
-            <div id="results" class="col-xs-12">
+        <div id="results">
 		
-	    </div>
         </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script>
         var http = new XMLHttpRequest();
-
-	var url = new URL(window.location.href);
-	var id = url.searchParams.get("id");
+	
+	var query = getQueryParams(document.location.search);
+	var id = query.id;
 	console.log(id);
 
 	if(id != null)
 		singleTournamentRequest(id);
 	else
 		submitRequest();
-
+	
+	//show 1 tournament
         function singleTournamentRequest(tid)
         {
             http.open("POST", "tournamentsClient.php", false);
@@ -42,27 +41,45 @@
         {
             if (http.readyState == 4)
             {
-                var res = http.responseText;
-                var data = JSON.parse(res);
-                var tourneyCount = length(data);
-                console.dir(data);
-                for (var i = 0; i < tourneyCount; i++)
-                {
-                    var obj = data[i];
-		    console.log("tourney " + i + ": " + data[i]);
+		/*var query = getQueryParams(document.location.search);
+		var id = query.id;
+		console.log(id);*/
+		var res = http.responseText;
+		var data = JSON.parse(res);
+		var obj = data[0];
+		var appending;
+		//console.log("tourney " + i + ":");
+		console.dir(obj);
 
-		    Object.keys(obj).forEach(function(key) {
+		appending = "<div class='row'>";
 
-			$( "#results" ).append( key + ": " + obj[key] );
+		Object.keys(obj).forEach(function(key) {
+			if (key == "tname")
+			{
+				appending += "<div class='col'>" + obj[key] + "</div>";
+			}
+			else if (key == "tdesc")
+			{
+				appending += "<div class='col'>" + obj[key] + "</div>";
+			}
+			else if (key == "starttime")
+			{	
+				var date = new Date(+obj[key]);
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				var day = date.getDate();
+				var hours = date.getHours();
+				var minutes = date.getMinutes();
 
-		    });
+				appending += "<div class='col'>" + 
+					month + "/" + day + "/" + year + " @ " + hours +
+					":" + minutes + "</div>";
+			}
+		});
+		    
+		appending += "</div>";
 
-                    /*for (let key of obj){
-                        var attrName = key;
-                        var attrValue = obj[key];
-			$( "#results" ).append( attrName + ": " + attrValue );
-                    }*/
-                }
+		$( "#results" ).append(appending);
             }
             else
             {
@@ -70,7 +87,8 @@
                 upcoming.innerHTML = "readystate not 4: " + http.readyState;
             }
         }
-
+	
+	//show all tournaments
         function submitRequest()
         {
             http.open("POST", "tournamentsClient.php", false);
@@ -86,23 +104,42 @@
                 var res = http.responseText;
                 var data = JSON.parse(res);
                 var tourneyCount = length(data);
+		var appending;
                 console.dir(data);
                 for (var i = 0; i < tourneyCount; i++)
                 {
                     var obj = data[i];
 		    console.log("tourney " + i + ": " + data[i]);
 
+		    appending = "<div class='row'>";
+
 		    Object.keys(obj).forEach(function(key) {
+			if (key == "tname")
+			{
+				appending += "<div class='col'><a href='tournaments.php?id=" + (+i+1) + "'>" + obj[key] + "</a></div>";
+			}
+			else if (key == "tdesc")
+			{
+				appending += "<div class='col'>" + obj[key] + "</div>";
+			}
+			else if (key == "starttime")
+			{	
+				var date = new Date(+obj[key]);
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				var day = date.getDate();
+				var hours = date.getHours();
+				var minutes = date.getMinutes();
 
-			$( "#results" ).append( key + ": " + obj[key] );
-
+				appending += "<div class='col'>" + 
+					month + "/" + day + "/" + year + " @ " + hours +
+					":" + minutes + "</div>";
+			}
 		    });
+		    
+		    appending += "</div>";
 
-                    /*for (let key of obj){
-                        var attrName = key;
-                        var attrValue = obj[key];
-			$( "#results" ).append( attrName + ": " + attrValue );
-                    }*/
+		    $( "#results" ).append(appending);
                 }
             }
             else
@@ -117,6 +154,17 @@
             return Object.keys(obj).length;
         }
 
+	function getQueryParams(qs) {
+		qs = qs.split('+').join(' ');
+
+		var params = {}, tokens, re = /[?&]?([^=]+)=([^&]*)/g;
+
+		while (tokens = re.exec(qs)) {
+			params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+		}
+
+		return params;
+	}
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
