@@ -191,7 +191,7 @@
 			echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
 		}
 		
-		$query = "SELECT * FROM tournamentinfo";
+		$query = "SELECT * FROM tournamentinfo ORDER BY startTimeEpoch DESC";
 
 		if ($result = mysqli_query($con, $query))
 		{
@@ -199,7 +199,7 @@
 			
 			/* fetch associative array */
 			while ($row = $result->fetch_assoc()) {
-				array_push($resArray, array("tname" => $row['tournamentname'], "tdesc" => $row['description'], "starttime" => $row['startTimeEpoch']));
+				array_push($resArray, array("tid" => $row['tournamentid'], "tname" => $row['tournamentname'], "tdesc" => $row['description'], "starttime" => $row['startTimeEpoch']));
 			}																									
 			
 			echo "tournamentinfo: " . PHP_EOL;
@@ -273,7 +273,7 @@
 			
 			/* fetch associative array */
 			while ($row = $result->fetch_assoc()) {
-				array_push($resArray, array("tname" => $row['tournamentname'], "tdesc" => $row['description'], "starttime" => $row['startTimeEpoch']));
+				array_push($resArray, array("tid" => $tid, "tname" => $row['tournamentname'], "tdesc" => $row['description'], "starttime" => $row['startTimeEpoch']));
 			}																									
 			
 			echo "tournamentinfo: " . PHP_EOL;
@@ -287,7 +287,6 @@
 			return NULL;
 		}
 	}
-  }
 	
 	function chatSend($message, $sessionid, $tournamentid)
 	{
@@ -362,7 +361,7 @@
 		case "validateSession":
 			validate($request['sessionid']);
 			break;
-		case "chatSend"
+		case "chatSend":
 			chatSend($request['message'], $request['sessionid'], $request['tournamentid']);
 			break;
 		default:

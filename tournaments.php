@@ -116,7 +116,7 @@
 		    Object.keys(obj).forEach(function(key) {
 			if (key == "tname")
 			{
-				appending += "<div class='col'><a href='tournaments.php?id=" + (+i+1) + "'>" + obj[key] + "</a></div>";
+				appending += "<div class='col'><a href='tournaments.php?id=" + obj['tid'] + "'>" + obj[key] + "</a></div>";
 			}
 			else if (key == "tdesc")
 			{
