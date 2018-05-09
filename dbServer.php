@@ -335,7 +335,7 @@
 		$query1 = "SELECT username FROM logininfo WHERE sessionid = " . $sessionid . "limit 1";
 
 		if ($result = mysqli_query($con, $query1))
-			
+		{
 			$username = mysqli_fetch_field($result);
 			
 			echo "username: " . $username . PHP_EOL;

@@ -18,7 +18,8 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     <script>
         var http = new XMLHttpRequest();
-	
+	//var secondReq = new XMLHttpRequest();
+
 	var query = getQueryParams(document.location.search);
 	var id = query.id;
 	console.log(id);
@@ -33,101 +34,100 @@
         {
 		var query = getQueryParams(document.location.search);
 		var id = query.id;
-		http.open("POST", "tournamentsClient.php", false);
-		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-		http.onreadystatechange = toggleJoinResponse;
-		http.send("sessionid=" + sessionid + "&tid=" + id);
+		var secondReq = new XMLHttpRequest();
+		secondReq.open("POST", "tournamentsClient.php", false);
+		secondReq.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		secondReq.onreadystatechange = function ()
+		{
+		    if (secondReq.readyState == 4 && secondReq.status == 200)
+		    {
+			var r = secondReq.responseText;
+			//var data = JSON.parse(res);
+			//var obj = data[0];
+			var appending;
+			console.dir(r);
+			appending = r;
+			$( "#results" ).append(appending);
+		    }
+		    else
+		    {
+		        var upcoming = document.getElementById("results");
+		        upcoming.innerHTML = "readystate not 4: " + secondReq.readyState;
+		    }
+		};
+		secondReq.send("sessionid=" + sessionid + "&tid=" + id);
         }
 
-        function toggleJoinResponse()
-        {
-            if (http.readyState == 4)
-            {
-		var res = http.responseText;
-		//var data = JSON.parse(res);
-		//var obj = data[0];
-		var appending;
-		console.dir(res);
-
-		appending = res;
-
-		
-
-		$( "#results" ).append(appending);
-            }
-            else
-            {
-                var upcoming = document.getElementById("results");
-                upcoming.innerHTML = "readystate not 4: " + http.readyState;
-            }
-        }
+        
 	
 	//show 1 tournament
         function singleTournamentRequest(tid)
         {
             http.open("POST", "tournamentsClient.php", false);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            http.onreadystatechange = singleTournamentResponse;
+            http.onreadystatechange = function ()
+		{
+		    if (http.readyState == 4 && http.status == 200)
+		    {
+			/*var query = getQueryParams(document.location.search);
+			var id = query.id;
+			console.log(id);*/
+			var res = http.responseText;
+			var data = JSON.parse(res);
+			var obj = data[0];
+			var appending;
+			//console.log("tourney " + i + ":");
+			console.dir(obj);
+
+			appending = "<div class='row'>";
+
+			Object.keys(obj).forEach(function(key) {
+				if (key == "tname")
+				{
+					appending += "<div class='col'>" + obj[key] + "</div>";
+				}
+				else if (key == "tdesc")
+				{
+					appending += "<div class='col'>" + obj[key] + "</div>";
+				}
+				else if (key == "starttime")
+				{	
+					var date = new Date(+obj[key]);
+					var year = date.getFullYear();
+					var month = date.getMonth() + 1;
+					var day = date.getDate();
+					var hours = date.getHours();
+					var minutes = date.getMinutes();
+
+					appending += "<div class='col'>" + 
+						month + "/" + day + "/" + year + " @ " + hours +
+						":" + minutes + "</div>";
+				}
+			});
+			    
+			appending += "</div>";
+
+			$( "#results" ).append(appending);
+		
+			var sessionid = localStorage.getItem("sessionid");
+			if (![0, -1, null].includes(sessionid))
+			{
+				console.log("sessionid valid, not 0, -1, or null (display join button)");
+				
+//toggleJoin(sessionid);
+			}
+
+		    }
+		    else
+		    {
+		        var upcoming = document.getElementById("results");
+		        upcoming.innerHTML = "readystate not 4: " + http.readyState;
+		    }
+		};
             http.send("tid=" + tid);
         }
 
-        function singleTournamentResponse()
-        {
-            if (http.readyState == 4)
-            {
-		/*var query = getQueryParams(document.location.search);
-		var id = query.id;
-		console.log(id);*/
-		var res = http.responseText;
-		var data = JSON.parse(res);
-		var obj = data[0];
-		var appending;
-		//console.log("tourney " + i + ":");
-		console.dir(obj);
-
-		appending = "<div class='row'>";
-
-		Object.keys(obj).forEach(function(key) {
-			if (key == "tname")
-			{
-				appending += "<div class='col'>" + obj[key] + "</div>";
-			}
-			else if (key == "tdesc")
-			{
-				appending += "<div class='col'>" + obj[key] + "</div>";
-			}
-			else if (key == "starttime")
-			{	
-				var date = new Date(+obj[key]);
-				var year = date.getFullYear();
-				var month = date.getMonth() + 1;
-				var day = date.getDate();
-				var hours = date.getHours();
-				var minutes = date.getMinutes();
-
-				appending += "<div class='col'>" + 
-					month + "/" + day + "/" + year + " @ " + hours +
-					":" + minutes + "</div>";
-			}
-		});
-		    
-		appending += "</div>";
-
-		$( "#results" ).append(appending);
-		
-		var sessionid = localStorage.getItem("sessionid");
-		if (![0, -1, null].includes(sessionid))
-		{
-			toggleJoin(sessionid);
-		}
-
-            }
-            else
-            {
-                var upcoming = document.getElementById("results");
-                upcoming.innerHTML = "readystate not 4: " + http.readyState;
-            }
-        }
+        
 	
 	//show all tournaments
         function submitRequest()
@@ -182,9 +182,7 @@
 
 			$( "#results" ).append(appending);
 
-			appending = "<div class='row'>Chat goes here</row>";
-
-			if ()
+			appending = "<div class='row'>Chat goes here</div>";
 			
 
                 }
