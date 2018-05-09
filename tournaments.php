@@ -27,6 +27,40 @@
 		singleTournamentRequest(id);
 	else
 		submitRequest();
+
+	//check who's logged in and display join button accordingly (single tournament)
+        function toggleJoin(sessionid)
+        {
+		var query = getQueryParams(document.location.search);
+		var id = query.id;
+		http.open("POST", "tournamentsClient.php", false);
+		http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+		http.onreadystatechange = toggleJoinResponse;
+		http.send("sessionid=" + sessionid + "&tid=" + id);
+        }
+
+        function toggleJoinResponse()
+        {
+            if (http.readyState == 4)
+            {
+		var res = http.responseText;
+		//var data = JSON.parse(res);
+		//var obj = data[0];
+		var appending;
+		console.dir(res);
+
+		appending = res;
+
+		
+
+		$( "#results" ).append(appending);
+            }
+            else
+            {
+                var upcoming = document.getElementById("results");
+                upcoming.innerHTML = "readystate not 4: " + http.readyState;
+            }
+        }
 	
 	//show 1 tournament
         function singleTournamentRequest(tid)
@@ -80,6 +114,13 @@
 		appending += "</div>";
 
 		$( "#results" ).append(appending);
+		
+		var sessionid = localStorage.getItem("sessionid");
+		if (![0, -1, null].includes(sessionid))
+		{
+			toggleJoin(sessionid);
+		}
+
             }
             else
             {
@@ -108,19 +149,19 @@
                 console.dir(data);
                 for (var i = 0; i < tourneyCount; i++)
                 {
-                    var obj = data[i];
-		    console.log("tourney " + i + ": " + data[i]);
+			var obj = data[i];
+			console.log("tourney " + i + ": " + data[i]);
 
-		    appending = "<div class='row'>";
+			appending = "<div class='row'>";
 
-		    Object.keys(obj).forEach(function(key) {
+			Object.keys(obj).forEach(function(key) {
 			if (key == "tname")
 			{
-				appending += "<div class='col'><a href='tournaments.php?id=" + obj['tid'] + "'>" + obj[key] + "</a></div>";
+				appending += "<div class='col-md'><a href='tournaments.php?id=" + obj['tid'] + "'>" + obj[key] + "</a></div>";
 			}
 			else if (key == "tdesc")
 			{
-				appending += "<div class='col'>" + obj[key] + "</div>";
+				appending += "<div class='col-md'>" + obj[key] + "</div>";
 			}
 			else if (key == "starttime")
 			{	
@@ -131,15 +172,21 @@
 				var hours = date.getHours();
 				var minutes = date.getMinutes();
 
-				appending += "<div class='col'>" + 
+				appending += "<div class='col-md'>" + 
 					month + "/" + day + "/" + year + " @ " + hours +
 					":" + minutes + "</div>";
 			}
-		    });
-		    
-		    appending += "</div>";
+			});
 
-		    $( "#results" ).append(appending);
+			appending += "</div>";
+
+			$( "#results" ).append(appending);
+
+			appending = "<div class='row'>Chat goes here</row>";
+
+			if ()
+			
+
                 }
             }
             else
