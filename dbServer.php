@@ -150,10 +150,9 @@
     
 		if ($logininfo = mysqli_query($con, $selectquery))
 		{
-			//session_start();
 			$person = mysqli_fetch_array($logininfo, MYSQLI_ASSOC);
 			
-			$player = $person['username'];  // Initializing Session with value of PHP Variable
+			$player = $person['username']; 
 		
 			$query = "INSERT INTO tournamentinfo (tournamentname, startTimeEpoch, `description`, hostname) VALUES ('$tname', $tdate, '$tdesc', '$player')";
 
