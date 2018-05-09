@@ -21,7 +21,14 @@ else
 }
 
 $request = array();
-if (isset($_POST['tid']))
+
+if (isset($_POST['sessionid']))
+{
+  $request['sessionid'] = $_POST['sessionid'];
+  $request['tid'] = $_POST['tid']
+  $request['type'] = "toggleJoin";
+}
+else if (isset($_POST['tid']))
 {
   $request['tid'] = $_POST['tid'];
   $request['type'] = "getTournament";

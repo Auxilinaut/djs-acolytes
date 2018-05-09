@@ -62,8 +62,8 @@
 	}
   }
 
-  function register($username, $password, $email, $ingamename)
-  {
+	function register($username, $password, $email, $ingamename)
+	{
 		echo "trying to connect to mysql server" . PHP_EOL;
 		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");// or die("Could not connect: " . mysql_error());
 
@@ -133,7 +133,7 @@
 		}
 
 		
-  }
+	}
 
 	function createTournament($tname, $tdate, $tdesc, $sessionid)
 	{
@@ -150,10 +150,9 @@
     
 		if ($logininfo = mysqli_query($con, $selectquery))
 		{
-			//session_start();
 			$person = mysqli_fetch_array($logininfo, MYSQLI_ASSOC);
 			
-			$player = $person['username'];  // Initializing Session with value of PHP Variable
+			$player = $person['username']; 
 		
 			$query = "INSERT INTO tournamentinfo (tournamentname, startTimeEpoch, `description`, hostname) VALUES ('$tname', $tdate, '$tdesc', '$player')";
 
@@ -323,57 +322,134 @@
 		
 	}
 
+	function toggleJoin($session, $tid)
+	{
+		$con = mysqli_connect ($GLOBALS['dbhost'], "root", "Password12345", "userdata");
 
-  function requestProcessor($request)
-  {
-    echo "received request" . PHP_EOL;
-    var_dump($request);
-    if(!isset($request['type']))
-    {
-      return "ERROR: request type not set";
-    }
-    switch ($request['type'])
-    {
-		case "login":
-			return login($request['username'], $request['password']);
-			break;
-		case "register":
-			return register($request['username'], $request['password'], $request['email'], $request['ingamename']);
-			break;
-		case "showTournaments":
-			if (isset($request['tid']))
-				return getTournament($request['tid']);
+		// Check connection
+		if (mysqli_connect_errno())
+		{
+			echo "Failed to connect to MySQL: " . mysqli_connect_error() . PHP_EOL;
+		}
+		
+		$query1 = "SELECT username FROM logininfo WHERE sessionid = " . $sessionid . "limit 1";
+
+		if ($result = mysqli_query($con, $query1))
+		{
+			$username = mysqli_fetch_field($result);
+			
+			echo "username: " . $username . PHP_EOL;
+
+			$query2 = "SELECT * FROM tournamentinfo WHERE hostname = " . $username . " AND tournamentid = " . $tid;
+
+			if ($tourney = mysqli_query($con, $query2))
+			{
+				/* fetch row */
+				while ($tourneyrow=mysqli_fetch_row($tourney))
+				{
+					var_dump($tourneyrow);
+					return 0;
+				}
+			}
 			else
-				return tournaments();
-			break;
-		case "getTournament":
-			return getTournament($request['tid']);
-			break;
-		case "createTournament":
-			return createTournament($request['tname'], $request['tdate'], $request['tdesc'], $request['sessionid']);
-			break;
-		case "viewProfile":
-			viewProfile($request['username']);
-			break;
-		case "updateProfile":
-			updateProfile($request['email'], $request['username'], $request['password'], $request['ingamename'], $request['preftop'], $request['prefjungle'], $request['prefmid'], $request['prefadc'], $request['prefsupport']);
-			break;
-		case "validateSession":
-			validate($request['sessionid']);
-			break;
-		case "chatSend":
-			chatSend($request['message'], $request['sessionid'], $request['tournamentid']);
-			break;
-		default:
-			echo "ERROR: request type unhandled";
-			break;
-    }
+			{
+				echo "no tournament with hostname " . $username . " and id " . $tid . PHP_EOL;
+				
+				$query2point5 = "SELECT id FROM logininfo WHERE username = " . $username . " limit 1";
 
-  }
+				if ($userid = mysqli_query($con, $query2point5))
+				{
+					$uid = mysqli_fetch_field($userid);
+			
+					echo "userid: " . $uid . PHP_EOL;
+					
+					$query3 = "SELECT * FROM playersintournaments WHERE id = " . $uid . " AND tournamentid = " . $tid;
 
-  $server = new rabbitMQServer("testRabbitMQ.ini", "testServer");
+					if ($player = mysqli_query($con, $query3))
+					{
+						/* fetch row */
+						while ($playerrow = mysqli_fetch_row($player))
+						{
+							var_dump($playerrow);
+							return 0;
+						}
+					}
+					else
+					{
+						echo "player may join";
+						return 1;
+					}
 
-  $server->process_requests('requestProcessor');
-  exit();
+				}
+				else
+				{
+					echo "no userid found for username " . $username . PHP_EOL;
+					return NULL;
+				}
+
+				return NULL;
+			}
+		}
+		else
+		{
+			echo "no username with that sessionid";
+			return NULL;
+		}
+	}
+
+	function requestProcessor($request)
+	{
+		echo "received request" . PHP_EOL;
+		var_dump($request);
+		if(!isset($request['type']))
+		{
+		return "ERROR: request type not set";
+		}
+		switch ($request['type'])
+		{
+			case "login":
+				return login($request['username'], $request['password']);
+				break;
+			case "register":
+				return register($request['username'], $request['password'], $request['email'], $request['ingamename']);
+				break;
+			case "showTournaments":
+				if (isset($request['tid']))
+					return getTournament($request['tid']);
+				else
+					return tournaments();
+				break;
+			case "getTournament":
+				return getTournament($request['tid']);
+				break;
+			case "createTournament":
+				return createTournament($request['tname'], $request['tdate'], $request['tdesc'], $request['sessionid']);
+				break;
+			case "viewProfile":
+				return viewProfile($request['username']);
+				break;
+			case "updateProfile":
+				return updateProfile($request['email'], $request['username'], $request['password'], $request['ingamename'], $request['preftop'], $request['prefjungle'], $request['prefmid'], $request['prefadc'], $request['prefsupport']);
+				break;
+			case "validateSession":
+				return validate($request['sessionid']);
+				break;
+			case "chatSend":
+				return chatSend($request['message'], $request['sessionid'], $request['tournamentid']);
+				break;
+			case "toggleJoin":
+				return toggleJoin($request['sessionid'], $request['tid']);			
+				break;
+			default:
+				echo "ERROR: request type unhandled";
+				break;
+		}
+
+	}
+
+	$server = new rabbitMQServer("testRabbitMQ.ini", "testServer");
+
+	$server->process_requests('requestProcessor');
+	exit();
 ?>
 

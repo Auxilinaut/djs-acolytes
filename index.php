@@ -9,7 +9,7 @@
 
 <body>
     <script>
-        if (localStorage.getItem("sessionid") != null)
+        if (![0, -1, null].includes(localStorage.getItem("sessionid")))
         {
             var url = 'tournaments.php';
             window.location.href = url;
