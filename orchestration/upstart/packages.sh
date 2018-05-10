@@ -61,7 +61,7 @@ done
 
 tar -cvf /tmp/orchestrator-backup/$HOST_MACHINE-$(date +%F).$VERSION.tar.gz /tmp/orchestrator-backup/
 
-find /tmp/orchestrator-backup/ -name "*.tar.gz" -exec rsync -R {} $USERNAME@$ORCHESTRATION:/home/$USERNAME/ORCHESTRATION-BACKUP/ \;
+find /tmp/orchestrator-backup/ -name "*.tar.gz" -exec rsync -R {} $USERNAME@$ORCHESTRATION:/home/$USERNAME/ORCHESTRATION-BACKUP/$HOST_MACHINE \;
 
 
 
