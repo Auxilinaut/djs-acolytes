@@ -14,25 +14,27 @@ MYSQL_USER="rabbitmq"
 MYSQL_PASSWORD=""
 DATABASE_NAME="userdata"
 
-
+`
 while (sleep $INTERVAL); do
   shopt -s nocasematch
 if [ $HOSTNAME = "PROD" ];
 then
-  HOST_MACHINE='PROD'
-  PRODHOST=$(hostname -I)
-  HOSTIP=$PRODHOST
+  export HOST_MACHINE='PROD'
+  export PRODHOST=$(hostname -I)
+  export HOSTIP=$PRODHOST
 elif [ $HOSTNAME = "DEV" ]
 then
-  HOST_MACHINE='DEV'
-  DEVHOST=$(hostname -I)
-  HOSTIP=$DEVHOST
+  export HOST_MACHINE='DEV'
+  export DEVHOST=$(hostname -I)
+  export HOSTIP=$DEVHOST
 elif [ $HOSTNAME = "QA" ]
 then
- HOST_MACHINE='QA'
- QAHOST=$(hostname -I) 
- HOSTIP=$QAHOST
+ export HOST_MACHINE='QA'
+ export QAHOST=$(hostname -I) 
+ export HOSTIP=$QAHOST
 fi
+done
+`
 
 cd /tmp
 
